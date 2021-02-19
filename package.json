@@ -1,0 +1,35 @@
+{
+  "name": "BadgerBytes",
+  "version": "1.0.0",
+  "description": "Web application to help BadgerByte with restaurant management and delivery service",
+  "main": "server.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test mocha ./test --recursive --exit",
+    "start": "node server",
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+  },
+  "author": "Harry Le <ktle4@wisc.edu>",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cross-env": "^7.0.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.9.2",
+    "gravatar": "^1.8.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.17",
+    "supertest-prefix": "^1.0.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.0",
+    "concurrently": "^5.3.0",
+    "mocha": "^8.3.0",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
+  }
+}
