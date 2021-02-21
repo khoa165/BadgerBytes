@@ -18,6 +18,10 @@ const ItemSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    item_category: {
+        type: String,
+        required: true,
+    },
     item_availability: {
         type: String,
         required: boolean,
