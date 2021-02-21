@@ -31,7 +31,7 @@ module.exports = {
     } = req.body;
 
     try {
-      // Check if user exists (check if email/username exists).
+      // Check if user exists (check if email exists).
       let sameEmail = await User.findOne({ email });
       const errors = [];
       if (sameEmail) {
@@ -68,13 +68,14 @@ module.exports = {
           id: user.id,
         },
       };
+
       jwt.sign(
         payload,
         process.env.JWT_PRIVATE_KEY,
         { expiresIn: 86400 },
         (err, token) => {
           if (err) throw err;
-          return res.status(200).json({ username, token });
+          return res.status(200).json({ token });
         }
       );
     } catch (err) {
