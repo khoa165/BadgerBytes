@@ -7,6 +7,8 @@ import {Switch,Route} from 'react-router-dom';
 import Offer from '../Offer/Offer';
 import axios from 'axios';
 import ForLoad from '../../Components/miscelleous/forLoad';
+import Login from '../Login/Login';
+
 class allClass extends Component{
     state={
         item:[],
@@ -68,6 +70,7 @@ class allClass extends Component{
    <Route path="/cart" component={()=><Cart adding={()=>this.addItem} remove={()=>this.removeItem} data={this.state.item}/> }/>
    <Route path="/menu" component={()=><Menu inbox={this.state.item.length} data={this.state.data.menu} loaded={this.state.loaded} adding={()=>this.addItem}/>}/>
    <Route path="/order" component={()=><Order count={this.state.item.length} data={this.state.item}/>}/>
+   <Route path="/login" component={()=><Login/>}/>
    <Route path="/" component={()=><Home count={this.state.item.length} data={this.state.data.offers.home}/>}/>
    
    </Switch>
