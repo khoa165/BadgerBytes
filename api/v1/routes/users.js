@@ -17,6 +17,8 @@ router.post(
     // Data validations.
     check('name').notEmpty(),
     check('email', 'Please enter a valid email!').isEmail(),
+    check('phone').notEmpty(),
+    check('address').notEmpty(),
     check('password')
       .isLength({ min: 6, max: 20 })
       .withMessage('Password must be between 6 and 20 characters long!')

@@ -9,9 +9,6 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Avatar from email.
-const gravatar = require('gravatar');
-
 // Link User model.
 const User = require('../../../models/User');
 
@@ -24,7 +21,14 @@ module.exports = {
     }
 
     // Destructuring data from request body.
-    const { name, email, password, confirmedPassword } = req.body;
+    const {
+      name,
+      email,
+      phone,
+      address,
+      password,
+      confirmedPassword,
+    } = req.body;
 
     try {
       // Check if user exists (check if email/username exists).
@@ -44,19 +48,13 @@ module.exports = {
         return res.status(400).json({ errors });
       }
 
-      // Get users gravatar.
-      const avatar = gravatar.url(email, {
-        s: '200',
-        r: 'pg',
-        d: 'mm',
-      });
-
       // Create new user.
       user = new User({
         name,
         email,
-        avatar,
         password,
+        phone,
+        address,
       });
 
       // Encrypt password.
