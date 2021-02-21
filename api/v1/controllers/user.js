@@ -95,22 +95,65 @@ module.exports = {
     }
 
     // Destructuring data from request body.
-    const { name, email, phone, address } = req.body;
+    const {
+      name,
+      email,
+      phone,
+      address,
+      oldPassword,
+      newPassword,
+      confirmedNewPassword,
+    } = req.body;
 
     try {
       const user = await User.findById(req.user.id);
+      const errors = [];
 
       // Check if email was updated.
       if (user.email !== email) {
         // Check if new email exists.
         let sameEmail = await User.findOne({ email });
         if (sameEmail) {
-          return res.status(400).json({
-            errors: [
-              { msg: 'Email was already taken. Please enter another email!' },
-            ],
+          errors.push({
+            msg: 'Email was already taken. Please enter another email!',
           });
         }
+      }
+
+      if (oldPassword && newPassword && confirmedNewPassword) {
+        // Check if old password matches.
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+          errors.push({
+            msg: 'Existing password is not correct! Please try again!',
+          });
+        }
+
+        // Check if new password is similar to old password.
+        if (newPassword === oldPassword) {
+          errors.push({
+            msg: 'New password cannot be the same as old password!',
+          });
+        }
+
+        // Check if passwords match.
+        if (newPassword !== confirmedNewPassword) {
+          errors.push({
+            msg: 'Passwords do not match!',
+          });
+        }
+
+        if (errors.length > 0) {
+          return res.status(400).json({ errors });
+        }
+
+        // Encrypt new password.
+        const salt = await bcrypt.genSalt(15);
+        user.password = await bcrypt.hash(newPassword, salt);
+      }
+
+      if (errors.length > 0) {
+        return res.status(400).json({ errors });
       }
 
       user.name = name;
