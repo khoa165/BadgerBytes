@@ -29,4 +29,20 @@ router.post(
   userController.register
 );
 
+// @route     PUT /users
+// @desc      Update user information
+// @access    Private
+router.put(
+  '/',
+  auth,
+  [
+    // Data validations.
+    check('name').notEmpty(),
+    check('email', 'Please enter a valid email!').isEmail(),
+    check('phone').notEmpty(),
+    check('address').notEmpty(),
+  ],
+  userController.update
+);
+
 module.exports = router;

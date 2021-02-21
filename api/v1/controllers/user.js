@@ -86,4 +86,45 @@ module.exports = {
       });
     }
   },
+
+  update: async (req, res, _next) => {
+    // Check for errors.
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Destructuring data from request body.
+    const { name, email, phone, address } = req.body;
+
+    try {
+      const user = await User.findById(req.user.id);
+
+      // Check if email was updated.
+      if (user.email !== email) {
+        // Check if new email exists.
+        let sameEmail = await User.findOne({ email });
+        if (sameEmail) {
+          return res.status(400).json({
+            errors: [
+              { msg: 'Email was already taken. Please enter another email!' },
+            ],
+          });
+        }
+      }
+
+      user.name = name;
+      user.email = email;
+      user.phone = phone;
+      user.address = address;
+      await user.save();
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({
+        errors: [
+          { msg: 'Unexpected server error happened. Please try again later!' },
+        ],
+      });
+    }
+  },
 };
