@@ -14,31 +14,31 @@ class allClass extends Component{
         item:[],
         data:[],
         loaded:false
-      };
-      componentDidMount(){
+    };
+    componentDidMount(){
         axios.get("https://twobrother0927.firebaseio.com/.json").then((data)=>{
             this.setState({data:data.data,loaded:true});
         }).catch(err=>console.log("Some Error")).then(console.log("Lets trye this "));
-      }
-      addItem=(obj)=>{
-          let extra=[...this.state.item];
-          var check=false;
-          extra.forEach(element=>{
-              if(element.head===obj.head){
+    }
+    addItem=(obj)=>{
+        let extra=[...this.state.item];
+        var check=false;
+        extra.forEach(element=>{
+            if(element.head===obj.head){
                 check=true;  
                 element.counter+=1;
-              }
+            }
 
-          });
-          if(!check){
+        });
+        if(!check){
             extra.push(obj);
-          }
+        }
           
-          this.setState({item:extra});
+        this.setState({item:extra});
           
-          alert(`${obj.head} is added to your cart`);
-      }
-      removeItem=(obj)=>{
+        alert(`${obj.head} is added to your cart`);
+    }
+    removeItem=(obj)=>{
         var copy=[...this.state.item];
         var check=false;
         let pos=-1;
@@ -58,7 +58,6 @@ class allClass extends Component{
             }
         }
         this.setState({item:copy});
-        
       }
       
     render(){
