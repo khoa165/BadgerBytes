@@ -23,7 +23,7 @@ router.post(
   '/',
   [
     // Data validations.
-    check('credential', 'Email or username is required!').notEmpty(),
+    check('email', 'Email is required!').notEmpty(),
     check('password', 'Password is required!').notEmpty(),
   ],
   authController.login
