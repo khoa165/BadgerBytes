@@ -48,7 +48,7 @@ module.exports = {
 
         // Destructuring data from request body.
         const {
-            id,
+            _id,
             item_name,
             picture_link,
             item_cost,
@@ -59,14 +59,16 @@ module.exports = {
         
         try {
             // Check if user attempting to create or update menu item is admin
-            let user = await User.findById(req.user.id);
-            if(!user.admin) {
-                return res.status(401).json({ errors: [{ msg: 'Unauthorized access, user is not an admin. Only admin can create an item!' }] });
+            if(req.user) {
+                let user = await User.findById(req.user.id);
+                if(!user.admin) {
+                    return res.status(401).json({ errors: [{ msg: 'Unauthorized access, user is not an admin. Only admin can create an item!' }] });
+                }
             }
 
             // Admin updating the fields of an existing item
-            if(id) {
-                const itemFound = await Item.findById(id);
+            if(_id) {
+                const itemFound = await Item.findById(_id);
                 if(!itemFound) {
                     return res.status(404).json({ errors: [{ msg: 'Menu item not found! Could not update the existing menu item' }] });
                 }
@@ -76,6 +78,7 @@ module.exports = {
                     // Check if menu item already exists
                     let sameItem = await Item.findOne({ item_name });
                     if(sameItem) {
+                        console.log("In here too");
                         return res.status(400).json({ errors: [{ msg: 'Menu item name already exists. Please provide new name or entirely new menu item!' }] });
                     }
                 }
@@ -144,7 +147,7 @@ module.exports = {
 
         // Destructuring data from request body.
         const {
-            id,
+            _id,
             item_name,
             picture_link,
             item_cost,
@@ -160,11 +163,11 @@ module.exports = {
                 return res.status(401).json({ errors: [{ msg: 'Unauthorized access, user is not an admin or staff. Only admin or staff can update an item!' }] });
             }
 
-            if(!id) {
+            if(!_id) {
                 return res.status(401).json({ errors: [{ msg: 'Unauthorized access, user is not an admin. Only admin can create an item! Staff may only update availability of item' }] });
             }
 
-            const itemFound = await Item.findById(id);
+            const itemFound = await Item.findById(_id);
             if(!itemFound) {
                 return res.status(404).json({ errors: [{ msg: 'Menu item not found! Could not update the existing menu item' }] });
             }

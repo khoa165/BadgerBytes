@@ -2,6 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
+// Middleware.
+const auth = require('../../../middleware/auth');
+
 // Validation.
 const { check } = require('express-validator');
 
@@ -22,6 +25,8 @@ router.get('/:category', itemsController.getCategoryItems);
 // @access    Admin
 router.post(
     '/',
+    auth,
+
     [
         // Data validations.
         check('item_name', 'Menu item name is required!').notEmpty(),
@@ -43,9 +48,10 @@ router.post(
 
 // @route     put /items
 // @desc      Update availability of existing menu item
-// @access    Admin and Staff
+// @access    Staff version
 router.put(
     '/',
+    auth,
     [
         check('item_availability')
             .notEmpty()
