@@ -13,15 +13,11 @@ class Login extends Component{
         console.log(`Email: ${ this.state.email }`)
         console.log(`Password: ${ this.state.password }`)
         axios.post('/api/v1/auth', {
-            credential: this.state.email,
+            email: this.state.email,
             password: this.state.password
         }).then(res => {
             console.log(res)
             console.log(res.data)
-        })
-        axios.get('/api/v1/auth'
-        ).then(res => {
-            console.log(res)
         })
     }
 
