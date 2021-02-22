@@ -2,3 +2,5 @@
 client/node_modules
 .env
 .vscode
+client/package-lock.json
+package-lock.json
