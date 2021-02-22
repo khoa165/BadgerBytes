@@ -3,7 +3,8 @@ import Home from '../Home/Home';
 import Menu from '../Menu/Menu';
 import Order from '../OrderOnline/OrderOnline';
 import Cart from '../Cart/Cart';
-import {Switch,Route} from 'react-router-dom';
+import { withRouter } from "react-router";
+import {Switch,Route,Redirect} from 'react-router-dom';
 import Offer from '../Offer/Offer';
 import axios from 'axios';
 import ForLoad from '../../Components/miscelleous/forLoad';
@@ -19,6 +20,9 @@ class allClass extends Component{
         axios.get("https://twobrother0927.firebaseio.com/.json").then((data)=>{
             this.setState({data:data.data,loaded:true});
         }).catch(err=>console.log("Some Error")).then(console.log("Lets trye this "));
+        // Check if user has a token
+        const token = sessionStorage.getItem('token');
+        console.log(token)
     }
     addItem=(obj)=>{
         let extra=[...this.state.item];
@@ -65,15 +69,15 @@ class allClass extends Component{
         const ddt=this.state.loaded?(
             <div>
             <Switch>
-                <Route path="/offers" component={()=><Offer count={this.state.item.length} data={this.state.data.offers.offer} board={this.state.data.offers.board}/>}/>
-   <Route path="/cart" component={()=><Cart adding={()=>this.addItem} remove={()=>this.removeItem} data={this.state.item}/> }/>
-   <Route path="/menu" component={()=><Menu inbox={this.state.item.length} data={this.state.data.menu} loaded={this.state.loaded} adding={()=>this.addItem}/>}/>
-   <Route path="/order" component={()=><Order count={this.state.item.length} data={this.state.item}/>}/>
-   <Route path="/login" component={()=><Login/>}/>
-   <Route path="/" component={()=><Home count={this.state.item.length} data={this.state.data.offers.home}/>}/>
+                <ProtectedRoute path="/offers" component={()=><Offer count={this.state.item.length} data={this.state.data.offers.offer} board={this.state.data.offers.board}/>}/>
+                <ProtectedRoute path="/cart" component={()=><Cart adding={()=>this.addItem} remove={()=>this.removeItem} data={this.state.item}/> }/>
+                <ProtectedRoute path="/menu" component={()=><Menu inbox={this.state.item.length} data={this.state.data.menu} loaded={this.state.loaded} adding={()=>this.addItem}/>}/>
+                <ProtectedRoute path="/order" component={()=><Order count={this.state.item.length} data={this.state.item}/>}/>
+                <Route path="/login" component={()=><Login/>}/>
+                <ProtectedRoute path="/" component={()=><Home count={this.state.item.length} data={this.state.data.offers.home}/>}/>
    
-   </Switch>
-       </div>
+            </Switch>
+            </div>
         ):<ForLoad/>;
         return(
            ddt
@@ -82,4 +86,21 @@ class allClass extends Component{
 }
 
 export default allClass;
+
+class ProtectedRoute extends Component {
+    render() {
+        const { component: Component, ...props } = this.props
+  
+        return (
+            <Route 
+            {...props} 
+            render={props => (
+                sessionStorage.getItem('token') !== null ?
+                <Component {...props} /> :
+                <Redirect to='/login' />
+            )} 
+            />
+        )
+    }
+}
 

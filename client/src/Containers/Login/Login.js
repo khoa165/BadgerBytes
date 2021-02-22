@@ -3,21 +3,24 @@ import {Button, Form, FormGroup, Label, Input, Col} from 'reactstrap';
 import axios from 'axios';
 
 class Login extends Component{
-    state={
-        email:"",
-        password:""
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: "",
+            password: "",
+        }
     }
 
-    submitForm(e) {
+    submitForm = async (e) => {
         e.preventDefault()
-        console.log(`Email: ${ this.state.email }`)
-        console.log(`Password: ${ this.state.password }`)
-        axios.post('/api/v1/auth', {
+        await axios.post('/api/v1/auth', {
             email: this.state.email,
             password: this.state.password
-        }).then(res => {
-            console.log(res)
-            console.log(res.data)
+        }).then((res) => {
+            sessionStorage.setItem('token', res.data.token);
+            this.state.history.push('/');
+        }, (error) => {
+            console.log(error);
         })
     }
 
