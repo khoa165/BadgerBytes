@@ -7,10 +7,15 @@ import Button from '../../Components/buttons/grab-offer/grab-btn';
 import Footer from '../../Components/navigation/footer/footer';
 
 class Cart extends Component {
-    state={
-        price:0,
-        items:{}
+    constructor(props){
+        super(props);
+        this.state={
+            
+            price:0,
+            items:{}
+        }
     }
+
     addCartHandler(obj){
         var copy=this.state.items;
         this.setState({items:{...copy}});
@@ -41,7 +46,7 @@ class Cart extends Component {
                         
                     </section>
                     <section className="cartTotal">
-                    <p >You Total : &#8377; {k}</p>
+                    <p >You Total : &#36; {k}</p>
                     <Button url="/order" content="Order Now"/>
                     </section>
                     <Footer />

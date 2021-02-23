@@ -1,42 +1,47 @@
 import React,{Component} from 'react';
 import './orderForm.css';
 import {Container,Row,Col} from 'reactstrap';
+import Button from '../../buttons/grab-offer/grab-btn';
 
 class  orderForm extends Component{
-    state={
-        name:"",
+
+    constructor(props) {
+        super(props);
+        this.state = {name:"",
         phone:"",
+        streetAddress:"",
         houseNumber:"",
-        locality:"",
-        pincode:"",
-        landmark:""
-    }
-    nameHandler=(e)=>{
+        city:"",
+        zipcode:"",};
+      }
+    
+    nameHandler(e){
         this.setState({name:e.target.value});
     }
-    phoneHandler=(e)=>{
+    phoneHandler(e){
         this.setState({phone:e.target.value});
     }
-    houseHandler=(e)=>{
+    streetHandler(e){
+        this.setState({streetAddress:e.target.value});
+    }
+    houseNumberHandler(e){
         this.setState({houseNumber:e.target.value});
     }
-    localityHandler=(e)=>{
-        this.setState({locality:e.target.value});
+    cityHandler(e){
+        this.setState({city:e.target.value});
     }
-    pincodeHandler=(e)=>{
-        this.setState({pincode:e.target.value});
+    zipcodeHandler(e){
+        this.setState({zipcode:e.target.value});
     }
-    landHandler=(e)=>{
-        this.setState({landmark:e.target.value});
-    }
+
     render(){
         var checkOut={
             name:this.state.name,
             phone:this.state.number,
+            streetAddress:this.state.streetAddress,
             houseNumber:this.state.houseNumber,
-            locality:this.state.locality,
-            landmark:this.state.landmark,
-            pincode:this.state.pincode
+            city:this.state.city,
+            zipcode:this.state.zipcode
         };
         return(
         <div className="OrderForm">
@@ -45,71 +50,74 @@ class  orderForm extends Component{
                 <div className="form__container">
                 <Container>
                     <Row>
-                        <Col xs="4" xl="4">
+                        <Col xs="6" xl="4">
                             <legend>
                                 <p>Name</p>
                             </legend>
                         </Col>
-                        <Col xs="8" xl="8">
+                        <Col xs="6" xl="8">
                         <input type="text" value={this.state.name} onChange={this.nameHandler} id="CustomerName"/>
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs="4" xl="4">
+                        <Col xs="6" xl="4">
                             <legend>
-                                <p>Address</p>
+                                <p>Phone number</p>
                             </legend>
                         </Col>
-                        <Col xs="8" xl="8">
-                        <input type="text" value={this.state.houseNumber} onChange={this.houseHandler} id="HouseNumber"/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs="4" xl="4">
-                            <legend>
-                                <p>Locality</p>
-                            </legend>
-                        </Col>
-                        <Col xs="8" xl="8">
-                        <input type="text" value={this.state.locality} onChange={this.localityHandler} id="Locality"/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs="4" xl="4">
-                            <legend>
-                                <p>Landmark</p>
-                            </legend>
-                        </Col>
-                        <Col xs="8" xl="8">
-                        <input type="text" value={this.state.landmark} onChange={this.landHandler} id="LandMark"/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs="4" xl="4">
-                            <legend>
-                                <p>Pin Code</p>
-                            </legend>
-                        </Col>
-                        <Col xs="8" xl="8">
-                        <input type="text" value={this.state.pincode} onChange={this.pincodeHandler} id="PinCode"/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs="4" xl="4">
-                            <legend>
-                                <p>Number</p>
-                            </legend>
-                        </Col>
-                        <Col xs="8" xl="8">
+                        <Col xs="6" xl="8">
                         <input type="text" value={this.state.phone} onChange={this.phoneHandler} id="Number"/>
                         </Col>
                     </Row>
+                    <Row>
+                        <Col xs="6" xl="4">
+                            <legend>
+                                <p>Street Address</p>
+                            </legend>
+                        </Col>
+                        <Col xs="6" xl="8">
+                        <input type="text" value={this.state.streetAddress} onChange={this.streetHandler} id="StreetAddress"/>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col xs="6" xl="4">
+                            <legend>
+                                <p>Building/Apt No.</p>
+                            </legend>
+                        </Col>
+                        <Col xs="6" xl="8">
+                        <input type="text" value={this.state.houseNumber} onChange={this.houseNumberHandler} id="HouseNumber"/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs="6" xl="4">
+                            <legend>
+                                <p>City</p>
+                            </legend>
+                        </Col>
+                        <Col xs="6" xl="8">
+                        <input type="text" value={this.state.city} onChange={this.cityHandler} id="City"/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs="6" xl="4">
+                            <legend>
+                                <p>Zip Code</p>
+                            </legend>
+                        </Col>
+                        <Col xs="6" xl="8">
+                        <input type="text" value={this.state.zipcode} onChange={this.zipcodeHandler} id="ZipCode"/>
+                        </Col>
+                    </Row>
+
+ 
                 </Container>
                 </div>
-                <button type="button" onClick={()=>this.props.place({checkOut})}>Place Order</button>
+                <Button type="button" url="/payment" content="Place Order"></Button>
             </form>
             
-            <p className="OrderFormNotice">*Payment will be takes as Cash On delivery</p>
+            <p className="OrderFormNotice">*You will be able to select payment option.</p>
         </div>
     );
 }

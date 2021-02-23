@@ -3,7 +3,9 @@ import Home from '../Home/Home';
 import Menu from '../Menu/Menu';
 import Order from '../OrderOnline/OrderOnline';
 import Cart from '../Cart/Cart';
-import {Switch,Route,Redirect} from 'react-router-dom';
+import Payment from '../Payment/Payment'
+import Payment2 from '../Payment/Payment2'
+import {Switch,Route, Redirect} from 'react-router-dom';
 import Offer from '../Offer/Offer';
 import axios from 'axios';
 import ForLoad from '../../Components/miscelleous/forLoad';
@@ -58,10 +60,9 @@ class allClass extends Component{
           
         this.setState({item:extra});
           
-        alert(`${obj.head} is added to your cart`);
-    }
-
-    removeItem=(obj)=>{
+          alert(`${obj.head} is added to your cart`);
+      }
+      removeItem(obj){
         var copy=[...this.state.item];
         var check=false;
         let pos=-1;
@@ -115,6 +116,8 @@ class allClass extends Component{
                 <ProtectedRoute path="/menu" isAuth={this.state.isAuth} component={()=><Menu inbox={this.state.item.length} data={this.state.data.menu} loaded={this.state.loaded} adding={()=>this.addItem}/>}/>
                 <Route exact path="/offers" component={()=><Offer count={this.state.item.length} data={this.state.data.offers.offer} board={this.state.data.offers.board}/>}/>
                 <Route path="/order" component={()=><Order count={this.state.item.length} data={this.state.item}/>}/>
+                <Route path="/offers" component={()=><Offer count={this.state.item.length} data={this.state.data.offers.offer} board={this.state.data.offers.board}/>}/>
+                <Route path="/payment" component={()=><Payment2 count={this.state.item.length} data={this.state.item}/>}/>
    
             </Switch>
             </div>

@@ -14,7 +14,7 @@ const item=(props)=>{
                     </Col>
                     <Col>
                         <div className="itemData">
-                            <p className="itemPrice">&#x20B9; {props.price}  </p>
+                            <p className="itemPrice">&#36; {props.price}  </p>
                         </div>
                     </Col>
                 </Row>

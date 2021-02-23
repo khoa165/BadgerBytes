@@ -9,7 +9,7 @@ import Form from '../../Components/Order/orderForm/orderForm';
 import Footer from '../../Components/navigation/footer/footer';
 class OrderOnlinem extends Component {
 
-    placeOrder = (obj) => {
+    placeOrder(obj){
             var copy = {
                 ...obj, food: this.props.data, time: new Date().toString(), user: {
                   geo:{lat:0,long:0},
@@ -30,6 +30,8 @@ class OrderOnlinem extends Component {
 
 
         render() {
+            console.log("version");
+            console.log(React.version);
             return (
                 <div className="OrderOnline">
                     <section className="Order">

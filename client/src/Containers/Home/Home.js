@@ -5,10 +5,13 @@ import Header from '../../Components/sections/section-header/section';
 
 
 class Home extends Component{
-    state={
-        lat:0,
-        long:0
-    }
+
+    constructor(props) {
+        super(props);
+        this.state = { lat:0,
+            long:0};
+      }
+    
     componentWillUpdate(){
         // navigator.geolocation.getCurrentPosition((data)=>{
         //     this.setState({lat:data.coords.latitude,long:data.coords.longitude});
