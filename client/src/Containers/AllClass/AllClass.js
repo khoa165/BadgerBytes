@@ -3,7 +3,7 @@ import Home from '../Home/Home';
 import Menu from '../Menu/Menu';
 import Order from '../OrderOnline/OrderOnline';
 import Cart from '../Cart/Cart';
-import Payment from '../Payment/Payment'
+import Account from '../Account/Account'
 import Payment2 from '../Payment/Payment2'
 import {Switch,Route, Redirect} from 'react-router-dom';
 import Offer from '../Offer/Offer';
@@ -164,20 +164,15 @@ class allClass extends Component{
                         />
                     )
                 }/>
-                <Route exact path="/account" render={ () =>
-                    !this.state.isAuth ? (
-                        <Redirect to="login"/>
-                    ) : (
-                        <Account count={this.state.item.length} data={this.state.item}
-                        />
-                    )
-                }/>
                 {/* Added for future route to allow users to edit account info */}
                 <Route exact path="/account" render={ () =>
                     !this.state.isAuth ? (
                         <Redirect to="login"/>
                     ) : (
-                        <Account count={this.state.item.length} data={this.state.item}
+                        <Account inbox={this.state.item.length}
+                        data={this.state.data.menu} 
+                        loaded={this.state.loaded} 
+                        adding={()=>this.addItem}
                         />
                     )
                 }/>
