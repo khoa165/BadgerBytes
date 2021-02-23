@@ -18,7 +18,7 @@ class Login extends Component{
             password: this.state.password
         }).then((res) => {
             sessionStorage.setItem('token', res.data.token);
-            this.state.history.push('/');
+            this.props.handleAuth();
         }, (error) => {
             console.log(error);
         })
@@ -70,7 +70,6 @@ class Login extends Component{
                 </Form>
             </div>
         );
-
         return(
             <div>
                 {login}
