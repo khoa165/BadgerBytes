@@ -10,7 +10,7 @@ import {Button} from 'reactstrap';
 class menuAll extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {options: [],
             load:"Select From Above",
             showCustomize:false,
