@@ -4,7 +4,6 @@ import Menu from '../Menu/Menu';
 import Order from '../OrderOnline/OrderOnline';
 import Cart from '../Cart/Cart';
 import Payment from '../Payment/Payment'
-import Payment2 from '../Payment/Payment2'
 import {Switch,Route} from 'react-router-dom';
 import Offer from '../Offer/Offer';
 import axios from 'axios';
@@ -75,7 +74,7 @@ class allClass extends Component{
    <Route path="/cart" component={()=><Cart adding={()=>this.addItem} remove={()=>this.removeItem} data={this.state.item}/> }/>
    <Route path="/menu" component={()=><Menu inbox={this.state.item.length} data={this.state.data.menu} loaded={this.state.loaded} adding={()=>this.addItem}/>}/>
    <Route path="/order" component={()=><Order count={this.state.item.length} data={this.state.item}/>}/>
-   <Route path="/payment" component={()=><Payment2 count={this.state.item.length} data={this.state.item}/>}/>
+   <Route path="/payment" render={()=><Payment count={this.state.item.length} data={this.state.item}/>}/>
    <Route path="/" component={()=><Home count={this.state.item.length} data={this.state.data.offers.home}/>}/>
    
    </Switch>

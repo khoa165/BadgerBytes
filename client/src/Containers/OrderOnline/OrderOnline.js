@@ -30,8 +30,6 @@ class OrderOnlinem extends Component {
 
 
         render() {
-            console.log("version");
-            console.log(React.version);
             return (
                 <div className="OrderOnline">
                     <section className="Order">
