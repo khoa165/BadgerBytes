@@ -33,7 +33,9 @@ router.post(
         check('picture_link', 'Menu item picture is required!')
             .notEmpty()
             .isURL(),
-        check('item_cost', 'Menu item cost with $ is required!').notEmpty(),
+        check('item_cost', 'Menu item cost with $ is required!').notEmpty()
+            .isNumeric()
+            .withMessage('Please enter cost as an integer.'),
         check('item_description', 'Menu item description is required!').notEmpty(),
         check('item_category',).notEmpty(),
         check('item_availability')
