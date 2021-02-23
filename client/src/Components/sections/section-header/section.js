@@ -11,12 +11,14 @@ import Footer from '../../navigation/footer/footer';
 
 let back = <Brand />;
 class section1 extends Component {
-    state = {
-        cls1: "circle",
+    constructor(props) {
+        super(props);
+        this.state = { cls1: "circle",
         cls2: "circle",
         cls3: "circle",
-        brand: false
-    }
+        brand: false};
+      }
+
     componentDidMount() {
         setTimeout(() => this.clickBtn(1), 3000);
 
