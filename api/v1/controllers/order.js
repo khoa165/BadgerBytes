@@ -72,6 +72,59 @@ module.exports = {
         }
     },
 
+    update: async (req, res, _next) => {
+        // Check for errors.
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        // Destructuring data from request body.
+        const {
+            priority,
+            complete,
+            _id,
+        } = req.body;
+
+        try {
+            // Check if user attempting to create or update menu item is admin
+            if(req.user) {
+                let user = await User.findById(req.user.id);
+                if(!user.admin) {
+                    return res.status(401).json({ errors: [{ msg: 'Unauthorized access, only staff and admin can update orders!' }] });
+                }
+            }
+            const errors = [];
+            const order = await Order.findById(_id);
+
+            // Check that either complete or priority is added
+            if (priority==undefined && complete==undefined) {
+                errors.push({
+                    msg: 'Please enter either complete or priority to update order!',
+                });
+            }
+
+            // Check that they are not updating to the same value ?
+
+            if (errors.length > 0) {
+                return res.status(400).json({ errors });
+            }
+
+            if (priority!=undefined) order.priority = priority;
+            if (complete!=undefined) order.complete = complete;
+            await order.save();
+            return res.status(200).json( {"msg": "Order updated!"} );
+
+        } catch (err) {
+            console.error(err.message);
+            return res.status(500).json({
+                errors: [
+                    { msg: 'Unexpected server error happened. Please try again later!' },
+                ],
+            });
+        }
+    },
+
     collect: async (req, res, _next) => {
         try {
             // Check if user attempting to create or update menu item is admin

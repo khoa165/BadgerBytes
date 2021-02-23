@@ -36,6 +36,29 @@ router.post(
     orderController.submit
 );
 
+// @route     PUT /order
+// @desc      Update an order
+// @access    Private
+router.put(
+    '/',
+    auth,
+    [
+        // Data validations.
+        check('complete')
+            .isBoolean()
+            .optional({nullable: true})
+            .withMessage('Complete must be either true or false!'),
+        check('priority')
+            .isIn([1, 2, 3])
+            .optional({nullable: true})
+            .withMessage('Priority must be either 1, 2, or 3!'),
+        check('_id')
+            .notEmpty()
+            .withMessage('Please enter the id of the order you are updating.'),
+    ],
+    orderController.update
+);
+
 // @route     GET /order
 // @desc      Get all orders
 // @access    Private
