@@ -5,6 +5,72 @@ const { validationResult } = require('express-validator');
 const Order = require('../../../models/Order');
 
 module.exports = {
+    submit: async (req, res, _next) => {
+
+        // Check for errors.
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        // Destructuring data from request body.
+        const {
+            items,
+            time_to_pickup,
+            car_description,
+            address,
+            is_delivery,
+            notes,
+        } = req.body;
+
+        try {
+            const errors = [];
+            let user = await User.findById(req.user.id);
+
+            // Add time to pickup to time now to get completion time
+            let completion_time = new Date(new Date().getTime() + time_to_pickup*60000);
+
+            // If delivery, make sure address is included
+            if (is_delivery && address==undefined) {
+                errors.push({
+                    msg: 'Must include an address for delivery orders.',
+                });
+            }
+
+            // Add up items to get cost
+            let cost = 0;
+            for (i = 0; i < items.length; i++) {
+                let curr_item = await Item.findById(items[i]);
+                cost += curr_item.item_cost;
+            }
+
+            if (errors.length > 0) {
+                return res.status(400).json({ errors });
+            }
+
+            // Create new order.
+            order = new Order({
+                user,
+                items,
+                completion_time,
+                cost,
+                is_delivery,
+                car_description,
+                address,
+                notes,
+            });
+            await order.save();
+            return res.status(200).json( {order} );
+
+        } catch (err) {
+            console.error(err.message);
+            return res.status(500).json({
+                errors: [
+                    { msg: 'Unexpected server error happened. Please try again later!' },
+                ],
+            });
+        }
+    },
 
     collect: async (req, res, _next) => {
         try {
