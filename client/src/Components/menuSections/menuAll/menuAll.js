@@ -8,19 +8,22 @@ import { Container, Row, Col } from 'reactstrap';
 import {Button} from 'reactstrap';
 
 class menuAll extends Component {
-    state = {
-        options: [],
-        load:"Select From Above",
-        showCustomize:false,
-        sendData:{}
-    }
-    openCustomizeHandler=(obj)=>{
+
+    constructor(props) {
+        
+        this.state = {options: [],
+            load:"Select From Above",
+            showCustomize:false,
+            sendData:{}};
+      }
+
+    openCustomizeHandler(obj){
         this.setState({showCustomize:true});
     }
-    closeCustomizationHandler=()=>{
+    closeCustomizationHandler(){
         this.setState({showCustomize:false});
     }
-    loadStateHandler=(name)=>{
+    loadStateHandler(name){
         
         this.setState({load:name,sendData:this.props.data[name]});
       

@@ -3,22 +3,29 @@ import Home from '../Home/Home';
 import Menu from '../Menu/Menu';
 import Order from '../OrderOnline/OrderOnline';
 import Cart from '../Cart/Cart';
+import Payment from '../Payment/Payment'
+import Payment2 from '../Payment/Payment2'
 import {Switch,Route} from 'react-router-dom';
 import Offer from '../Offer/Offer';
 import axios from 'axios';
 import ForLoad from '../../Components/miscelleous/forLoad';
 class allClass extends Component{
-    state={
-        item:[],
-        data:[],
-        loaded:false
-      };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            item:[],
+            data:[],
+            loaded:false
+          };
+      }
+
       componentDidMount(){
         axios.get("https://twobrother0927.firebaseio.com/.json").then((data)=>{
             this.setState({data:data.data,loaded:true});
         }).catch(err=>console.log("Some Error")).then(console.log("Lets trye this "));
       }
-      addItem=(obj)=>{
+      addItem(obj){
           let extra=[...this.state.item];
           var check=false;
           extra.forEach(element=>{
@@ -36,7 +43,7 @@ class allClass extends Component{
           
           alert(`${obj.head} is added to your cart`);
       }
-      removeItem=(obj)=>{
+      removeItem(obj){
         var copy=[...this.state.item];
         var check=false;
         let pos=-1;
@@ -68,6 +75,7 @@ class allClass extends Component{
    <Route path="/cart" component={()=><Cart adding={()=>this.addItem} remove={()=>this.removeItem} data={this.state.item}/> }/>
    <Route path="/menu" component={()=><Menu inbox={this.state.item.length} data={this.state.data.menu} loaded={this.state.loaded} adding={()=>this.addItem}/>}/>
    <Route path="/order" component={()=><Order count={this.state.item.length} data={this.state.item}/>}/>
+   <Route path="/payment" component={()=><Payment2 count={this.state.item.length} data={this.state.item}/>}/>
    <Route path="/" component={()=><Home count={this.state.item.length} data={this.state.data.offers.home}/>}/>
    
    </Switch>

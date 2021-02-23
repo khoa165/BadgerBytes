@@ -24,17 +24,17 @@
   color: #fff;
 }
 .form__container {
-  width: 50%;
+  width: 80%;
   margin: 0 auto;
   /* background-color: grey; */
 }
 .form__container {
   @media (max-width: 600px) {
-    width: 75%;
+    width: 80%;
   }
 }
 .OrderFormHead {
-    padding-top: 15px;
+  padding-top: 15px;
   color: #fff;
   font-size: 24px;
 }

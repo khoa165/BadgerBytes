@@ -12,10 +12,12 @@ import convo from '../../../Assests/icons/convo.png';
 import icon from './menu.png';
 import { Link } from 'react-router-dom';
 class toolbar extends Component {
-    state = {
-        show: false,
-        short: ["contentTool"]
-    }
+
+    constructor(props) {
+        super(props);
+        this.state = {show: false,
+            short: ["contentTool"]};
+      }
     render() {
         let count;
         if (this.props.count === undefined) {
