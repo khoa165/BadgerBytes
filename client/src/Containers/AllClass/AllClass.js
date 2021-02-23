@@ -30,18 +30,21 @@ class allClass extends Component{
                 'x-auth-token': sessionStorage.getItem('token')
             }
         }).then( (res) => {
-            // this.state.isAuth = true
-            this.setState({isAuth: true});
+            this.setState({
+                isAuth: true, 
+                isAdmin: res.data.admin, 
+                isStaff: res.data.staff
+            });
         })
         console.log('handling auth')
     }
 
-    async componentDidMount(){
+    componentDidMount(){
+        // Check if user has a token
+        this.handleAuth();
         axios.get("https://twobrother0927.firebaseio.com/.json").then((data)=>{
             this.setState({data:data.data,loaded:true});
         }).catch(err=>console.log("Some Error")).then(console.log("Lets trye this "));
-        // Check if user has a token
-        await this.handleAuth();
     }
 
     addItem=(obj)=>{
@@ -88,11 +91,11 @@ class allClass extends Component{
         const ddt=this.state.loaded?(
             <div>
             <Switch>
-                <Route exact path="/" render={ props =>
-                    this.state.isAuth ? (
-                        <Home  count={this.state.item.length} data={this.state.data.offers.home}/>
-                    ) : (
+                <Route exact path="/" render={ (props) =>
+                    !this.state.isAuth ? (
                         <Redirect to="/login"/>
+                    ) : (
+                        <Home count={this.state.item.length} data={this.state.data.offers.home}/>
                     )
                 }/>
                 <Route exact path="/login" render={ props =>
@@ -103,21 +106,81 @@ class allClass extends Component{
                     )
                 }/>
                 <Route exact path="/cart" render={ props=>
-                    this.state.isAuth ? (
+                    !this.state.isAuth ? (
+                        <Redirect to="/login"/>
+                    ) : (
                         <Cart adding={()=>this.addItem} 
                             remove={()=>this.removeItem} 
                             data={this.state.item}
                         />
-                    ) : (
-                        <Redirect to="login"/>
                     )
                 }/>
 
-                <ProtectedRoute path="/menu" isAuth={this.state.isAuth} component={()=><Menu inbox={this.state.item.length} data={this.state.data.menu} loaded={this.state.loaded} adding={()=>this.addItem}/>}/>
-                <Route exact path="/offers" component={()=><Offer count={this.state.item.length} data={this.state.data.offers.offer} board={this.state.data.offers.board}/>}/>
-                <Route path="/order" component={()=><Order count={this.state.item.length} data={this.state.item}/>}/>
-                <Route path="/offers" component={()=><Offer count={this.state.item.length} data={this.state.data.offers.offer} board={this.state.data.offers.board}/>}/>
-                <Route path="/payment" component={()=><Payment2 count={this.state.item.length} data={this.state.item}/>}/>
+                <Route exact path="/menu"  render={ () =>
+                    !this.state.isAuth ? (
+                        <Redirect to="login"/>
+                    ) : (
+                        <Menu inbox={this.state.item.length}
+                         data={this.state.data.menu} 
+                         loaded={this.state.loaded} 
+                         adding={()=>this.addItem}
+                         />
+                    )
+                }/>
+
+                <Route exact path="/offers" render={ () =>
+                    !this.state.isAuth ? (
+                        <Redirect to="login"/>
+                    ) : (
+                        <Offer count={this.state.item.length} 
+                         data={this.state.data.offers.offer} 
+                         board={this.state.data.offers.board}
+                        />
+                    )
+                }/>
+
+                <Route exact path="/order" render={ () => 
+                    !this.state.isAuth ? (
+                        <Redirect to="login"/>
+                    ) : (
+                        <Order count={this.state.item.length} 
+                         data={this.state.item}
+                        />
+                    )
+                }/>
+                <Route exact path="/offers" render={ () =>
+                    !this.state.isAuth ? (
+                        <Redirect to="login"/>
+                    ) : (
+                        <Offer count={this.state.item.length} data={this.state.data.offers.offer} board={this.state.data.offers.board}
+                        />
+                    )
+                }/>
+                <Route exact path="/payment" render={ () =>
+                    !this.state.isAuth ? (
+                        <Redirect to="login"/>
+                    ) : (
+                        <Payment2 count={this.state.item.length} data={this.state.item}
+                        />
+                    )
+                }/>
+                <Route exact path="/account" render={ () =>
+                    !this.state.isAuth ? (
+                        <Redirect to="login"/>
+                    ) : (
+                        <Account count={this.state.item.length} data={this.state.item}
+                        />
+                    )
+                }/>
+                {/* Added for future route to allow users to edit account info */}
+                <Route exact path="/account" render={ () =>
+                    !this.state.isAuth ? (
+                        <Redirect to="login"/>
+                    ) : (
+                        <Account count={this.state.item.length} data={this.state.item}
+                        />
+                    )
+                }/>
    
             </Switch>
             </div>
