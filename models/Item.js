@@ -13,7 +13,7 @@ const ItemSchema = new mongoose.Schema({
         unique: true,
     },
     item_cost: {
-        type: String,
+        type: Number,
         required: true,
     },
     item_description: {
