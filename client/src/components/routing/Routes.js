@@ -14,6 +14,8 @@ import NavigationBar from '../layout/NavigationBar';
 import Menu from '../menu/Menu';
 import ItemCreate from '../menu/ItemCreate';
 import ItemEdit from '../menu/ItemEdit';
+// Dashboard component.
+import Dashboard from '../dashboard/Dashboard';
 
 // Library component.
 import { Container } from 'reactstrap';
@@ -29,6 +31,8 @@ const Routes = () => {
           <PrivateRoute exact path='/menu' component={Menu} />
           <PrivateRoute exact path='/items/new' component={ItemCreate} />
           <PrivateRoute exact path='/items/:item_id' component={ItemEdit} />
+          <PrivateRoute exact path='/dashboard' component={Dashboard} />
+          <PrivateRoute exact path='/cart' component={Dashboard} />
           <Route component={NotFound} />
         </Switch>
       </Container>

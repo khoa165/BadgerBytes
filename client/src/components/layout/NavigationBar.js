@@ -17,17 +17,32 @@ import '../../styles/NavigationBar.scss';
 const NavigationBar = ({
   icon,
   title,
-  auth: { isAuthenticated, loading },
+  auth: { isAuthenticated, loading, user },
   logout,
 }) => {
   const authLinks = (
     <Fragment>
       <NavItem>
         <Link to='/menu' className='nav-link'>
-          <i className='fas fa-chart-line mr-1' />
-          Dashboard
+          <i className='fas fa-hamburger mr-1' />
+          Menu
         </Link>
       </NavItem>
+      {user && (user.admin || user.staff) ? (
+        <NavItem>
+          <Link to='/dashboard' className='nav-link'>
+            <i className='fas fa-chart-line mr-1' />
+            Dashboard
+          </Link>
+        </NavItem>
+      ) : (
+        <NavItem>
+          <Link to='/cart' className='nav-link'>
+            <i className='fas fa-shopping-cart mr-1' />
+            Checkout
+          </Link>
+        </NavItem>
+      )}
       <NavItem>
         <Link to='#!' className='nav-link' onClick={logout}>
           <i className='fas fa-sign-out-alt mr-1' />
