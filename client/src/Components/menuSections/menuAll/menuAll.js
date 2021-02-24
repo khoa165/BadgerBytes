@@ -8,13 +8,16 @@ import { Container, Row, Col } from 'reactstrap';
 import {Button} from 'reactstrap';
 
 class menuAll extends Component {
+    
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {options: [],
             load:"Select From Above",
             showCustomize:false,
             sendData:{}};
+        
+        this.loadStateHandler = this.loadStateHandler.bind(this);
       }
 
     openCustomizeHandler(obj){
@@ -24,7 +27,6 @@ class menuAll extends Component {
         this.setState({showCustomize:false});
     }
     loadStateHandler(name){
-        
         this.setState({load:name,sendData:this.props.data[name]});
       
     }
@@ -32,10 +34,12 @@ class menuAll extends Component {
         
         let opn = Object.keys(this.props.data).map(data => <Single  name={data} click={this.loadStateHandler}  key={data} />);
         let customize=(
+            
             <div>
             <Backdrop click={this.closeCustomizationHandler} />
             <Modal >
                 <div className="addCustomization">
+
                 <p className="cross" onClick={this.closeCustomizationHandler}> X</p>
                     <p className="CustomizationHeader">Customize</p>
                     <p className="CustomizationSub">Add Topping</p>

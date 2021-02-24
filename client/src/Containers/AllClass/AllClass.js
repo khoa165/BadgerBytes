@@ -5,7 +5,7 @@ import Order from '../OrderOnline/OrderOnline';
 import Cart from '../Cart/Cart';
 import Account from '../Account/Account'
 import Payment from '../Payment/Payment'
-import {Switch,Route, Redirect} from 'react-router-dom';
+import {Switch,Route, Redirect, BrowserRouter} from 'react-router-dom';
 import Offer from '../Offer/Offer';
 import axios from 'axios';
 import ForLoad from '../../Components/miscelleous/forLoad';
@@ -15,13 +15,16 @@ class allClass extends Component{
     constructor(props) {
         super(props);
         this.handleAuth = this.handleAuth.bind(this);
+        this.addItem = this.addItem.bind(this);
         this.state = {
             item: [],
             data: [],
+            deliveryInfo:[],
             isAuth: false,
             isStaff: false,
             isAdmin: false
         }
+
     }
 
     async handleAuth() {
@@ -47,7 +50,7 @@ class allClass extends Component{
         }).catch(err=>console.log("Some Error")).then(console.log("Lets trye this "));
     }
 
-    addItem=(obj)=>{
+    addItem(obj){
         let extra=[...this.state.item];
         var check=false;
         extra.forEach(element=>{
@@ -89,6 +92,7 @@ class allClass extends Component{
       
     render(){
         const ddt=this.state.loaded?(
+            <BrowserRouter>
             <div>
             <Switch>
                 <Route exact path="/" render={ (props) =>
@@ -160,7 +164,7 @@ class allClass extends Component{
                     !this.state.isAuth ? (
                         <Redirect to="login"/>
                     ) : (
-                        <Payment2 count={this.state.item.length} data={this.state.item}
+                        <Payment count={this.state.item.length} data={this.state.item}
                         />
                     )
                 }/>
@@ -179,6 +183,7 @@ class allClass extends Component{
    
             </Switch>
             </div>
+            </BrowserRouter>
         ):<ForLoad/>;
         return(
            ddt

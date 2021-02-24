@@ -4,26 +4,26 @@ import { NavLink } from 'react-router-dom';
 import Toolbar from '../../Components/navigation/toolbar/toolbar';
 import Footer from '../../Components/navigation/footer/footer';
 import paypalIcon from '../../Assests/icons/paypalbutton.png';
-import Receipt from '../../Components/pay/Receipt';
-import ReactPDF from '@react-pdf/renderer';
 import jsPDF from 'jspdf'
+import item from '../../Components/Order/Items/Item/item';
 
 
 const Payment = (props) => {
 
-  const [foodItems,setFoodItems] = useState([{
-    name: "Chicken burger",
-    quantity: 1,
-    price: 5.00
-  }]);
+  
+  
 
 
-  const [totalCost,setTotalCost] = useState(0);
+
+  
 
   const [paid, setPaid] = useState(false);
 
 
       function Payment(){
+
+        let k = 0;
+        props.data.map(element=>k+=element.price*element.counter)
 
         const handleClick = () => {
           setPaid(true)
@@ -32,15 +32,25 @@ const Payment = (props) => {
         // Generating pdf receipt. Refer to this link : https://www.positronx.io/react-pdf-tutorial-generate-pdf-in-react-with-jspdf/
         const generatePDF = () => {
           const doc = new jsPDF('p', 'pt');
-          
+          let yAxis = 60;
+
+          doc.setFont('helvetica')
           doc.text(20, 20, 'Your order is confirmed!')
+            doc.text(20, yAxis, 'Item Name' )
+            doc.text(200, yAxis, 'Quantity' )
+            doc.text(300, yAxis, 'Price' )
+
+          
+            props.data.map((item,index)=>{
+              doc.text(20, yAxis*(index+2), item.head )
+            doc.text(200, yAxis*(index+2), item.counter.toString() )
+            doc.text(300, yAxis*(index+2), item.price.toString() )
         
-          doc.setFont('helvetica')
-          doc.text(20, 60, 'This is the second title.')
-        
-          doc.setFont('helvetica')
-          doc.text(20, 100, 'This is the third title.')      
-        
+})
+                 
+
+            
+          
           doc.save('Receipt.pdf')
         }
 
@@ -53,13 +63,13 @@ const Payment = (props) => {
           <Col xs={4}><p>Quantity</p></Col>
           <Col xs={4}><p>Price</p></Col>
           </Row>
-          {foodItems.map(item=>(<Row className="justify-content-center">
-            <Col  xs={4}><p>{item.name}</p></Col>
-            <Col  xs={4}><p>{item.quantity}</p></Col>
+          {props.data.map(item=>(<Row className="justify-content-center">
+            <Col  xs={4}><p>{item.head}</p></Col>
+            <Col  xs={4}><p>{item.counter}</p></Col>
             <Col  xs={4}><p>&#36; {item.price}</p></Col>
 
           </Row>))}
-          <Row className="mt-3"><Col xs={8}></Col><Col xs={4}><p class="fw-bold">Total: &#36; {totalCost}</p></Col></Row>
+          <Row className="mt-3"><Col xs={8}></Col><Col xs={4}><p class="fw-bold">Total: &#36; {k}</p></Col></Row>
           
           
         </Container>
@@ -78,13 +88,13 @@ const Payment = (props) => {
           <Col  xs={4}><p>Quantity</p></Col>
           <Col  xs={4}><p>Price</p></Col>
           </Row>
-          {foodItems.map(item=>(<Row className="justify-content-center">
-            <Col  xs={4}><p class="fw-bolder">{item.name}</p></Col>
-            <Col  xs={4}><p>{item.quantity}</p></Col>
+          {props.data.map(item=>(<Row className="justify-content-center">
+            <Col  xs={4}><p class="fw-bolder">{item.head}</p></Col>
+            <Col  xs={4}><p>{item.counter}</p></Col>
             <Col  xs={4}><p>&#36; {item.price}</p></Col>
     
           </Row>))}
-          <Row class="mt-2"><Col xs={8}></Col><Col xs={4}><p class="fw-bold">Total: &#36; {totalCost}</p></Col></Row>
+          <Row class="mt-2"><Col xs={8}></Col><Col xs={4}><p class="fw-bold">Total: &#36; {k}</p></Col></Row>
           
           
         </Container><Button className="mt-2" onClick={()=>generatePDF()} type="primary">Print Receipt</Button></div>)

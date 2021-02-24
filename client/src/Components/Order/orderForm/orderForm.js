@@ -4,7 +4,8 @@ import {Container,Row,Col} from 'reactstrap';
 import Button from '../../buttons/grab-offer/grab-btn';
 import { Redirect } from "react-router-dom"; 
 
-function orderForm2() {
+
+function orderForm2(props) {
 
     const [deliveryInfo,setDeliveryInfo] = useState([{
         userName:"",
@@ -37,16 +38,13 @@ function orderForm2() {
 
     const onSubmit = (e) =>{
         e.preventDefault()
-        console.log('HEREEE')
-        return <Redirect to="/payment" />
-        // if(deliveryInfo.name === "" || deliveryInfo.phone === "" || deliveryInfo.streetAddress === "" || deliveryInfo.houseNumber === "" ||deliveryInfo.city === "" || deliveryInfo.zipcode === ""){
-        //     setIsFilled(false)
-        //     alert("Please fill out all information");
-        // }else{
-        //     setIsFilled(true)
-        //     console.log("ehere");
-        //      return <Redirect to="/payment" />
-        // }
+        // return <Redirect to="/payment" />
+        if(deliveryInfo.userName === "" || deliveryInfo.phone === "" || deliveryInfo.streetAddress === "" || deliveryInfo.houseNumber === "" ||deliveryInfo.city === "" || deliveryInfo.zipcode === ""){
+            alert("Please fill out all information");
+        }else{
+            return <Redirect to="/payment"/>
+            
+        }
     }
     return (
         <div>
@@ -62,7 +60,7 @@ function orderForm2() {
                             </legend>
                         </Col>
                         <Col xs="6" xl="8">
-                        <input type="text" value={deliveryInfo.userName} onChange={e=>nameHandler(e)} id="CustomerName"/>
+                        <input type="text" required value={deliveryInfo.userName} onChange={e=>nameHandler(e)} id="CustomerName"/>
                         </Col>
                     </Row>
                     <Row>
@@ -72,7 +70,7 @@ function orderForm2() {
                             </legend>
                         </Col>
                         <Col xs="6" xl="8">
-                        <input type="text" value={deliveryInfo.phone} onChange={e=>phoneHandler(e)} id="Number"/>
+                        <input type="text" required value={deliveryInfo.phone} onChange={e=>phoneHandler(e)} id="Number"/>
                         </Col>
                     </Row>
                     <Row>
@@ -82,7 +80,7 @@ function orderForm2() {
                             </legend>
                         </Col>
                         <Col xs="6" xl="8">
-                        <input type="text" value={deliveryInfo.streetAddress} onChange={e=>streetHandler(e)} id="StreetAddress"/>
+                        <input type="text" required value={deliveryInfo.streetAddress} onChange={e=>streetHandler(e)} id="StreetAddress"/>
                         </Col>
                     </Row>
 
@@ -93,7 +91,7 @@ function orderForm2() {
                             </legend>
                         </Col>
                         <Col xs="6" xl="8">
-                        <input type="text" value={deliveryInfo.houseNumber} onChange={e=>houseNumberHandler(e)} id="HouseNumber"/>
+                        <input type="text" required value={deliveryInfo.houseNumber} onChange={e=>houseNumberHandler(e)} id="HouseNumber"/>
                         </Col>
                     </Row>
                     <Row>
@@ -103,7 +101,7 @@ function orderForm2() {
                             </legend>
                         </Col>
                         <Col xs="6" xl="8">
-                        <input type="text" value={deliveryInfo.city} onChange={e=>cityHandler(e)} id="City"/>
+                        <input type="text" required value={deliveryInfo.city} onChange={e=>cityHandler(e)} id="City"/>
                         </Col>
                     </Row>
                     <Row>
@@ -113,14 +111,14 @@ function orderForm2() {
                             </legend>
                         </Col>
                         <Col xs="6" xl="8">
-                        <input type="text" value={deliveryInfo.zipcode} onChange={e=>zipcodeHandler(e)} id="ZipCode"/>
+                        <input type="text" required value={deliveryInfo.zipcode} onChange={e=>zipcodeHandler(e)} id="ZipCode"/>
                         </Col>
                     </Row>
 
  
                 </Container>
                 </div>
-                <Button type="submit" content="PlaceOrder"></Button>
+                <Button type="submit" url="/payment" content="PlaceOrder"></Button>
             </form>
             
             <p className="OrderFormNotice">*You will be able to select payment option.</p>
