@@ -14,8 +14,10 @@ class menuAll extends Component {
         this.state = {options: [],
             load:"Select From Above",
             showCustomize:false,
-            sendData:{}};
-      }
+            sendData:{}
+        };
+        this.loadStateHandler = this.loadStateHandler.bind(this);
+    }
 
     openCustomizeHandler(obj){
         this.setState({showCustomize:true});
@@ -24,12 +26,13 @@ class menuAll extends Component {
         this.setState({showCustomize:false});
     }
     loadStateHandler(name){
-        
-        this.setState({load:name,sendData:this.props.data[name]});
+        console.log(name)
+        console.log(this.props)
+        this.setState({ load : name, sendData : this.props.data[name] });
       
     }
     render() {
-        
+        console.log(this.props.data)
         let opn = Object.keys(this.props.data).map(data => <Single  name={data} click={this.loadStateHandler}  key={data} />);
         let customize=(
             <div>
