@@ -1,8 +1,6 @@
 import React from 'react';
 import './inOption.css';
 
-import {NavLink} from 'react-router-dom';
-
 
 const inOption = (props) => {
     console.log("called");
@@ -15,11 +13,11 @@ const inOption = (props) => {
         </div>
        
         <p className="inContent">{props.content}</p>
-        <p className="inPrice">&#x20B9; {props.price} </p>
-        <p className="customize" onClick={props.customization}>Customize</p>
+        <p className="inPrice">$ {props.price} </p>
        
-        <button type="button" className="inOpButton" onClick={()=>props.add({head:props.head,counter:1,url:props.image,price:props.price,content:props.content})} >Add to Cart</button>
-        <NavLink to="/order" onClick={()=>props.add({head:props.head,counter:1,url:props.image,price:props.price,content:props.content})}>Order Now</NavLink>
+        <button type="button" className="inOpButton" onClick={ () =>
+            props.add( {head: props.head, counter: 1, url: props.image, price: props.price, content: props.content} )
+        } >Add to Cart</button>
     </div>
     );
     let result =props.check!==null?value:null;

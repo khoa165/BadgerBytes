@@ -18,8 +18,22 @@ const Item=(props)=>{
                         <p className="cartItemContentHead">{props.head}</p>
                         <p className="cartItemContentContent">{props.content}</p>
                         <p className="cartItemContentPrice">&#36; {props.price}<span className="cartAmount mx-2">{props.cnt}</span> </p>
-                        <Button onClick={()=>props.increment({head:props.head,counter:props.cnt,url:props.url,content:props.content,price:props.price})} >+</Button>
-                        <Button onClick={()=>props.decrement({head:props.head,counter:props.cnt,url:props.url,content:props.content,price:props.price})}>-</Button>
+                        <Button onClick={()=>props.increment({
+                            head: props.head,
+                            counter: props.cnt,
+                            url: props.url,
+                            content: props.content,
+                            price: props.price
+                            })} 
+                        >+</Button>
+                        <Button onClick={()=>props.decrement({
+                            head:props.head,
+                            counter:props.cnt,
+                            url:props.url,
+                            content:props.content,
+                            price:props.price
+                            })}
+                        >-</Button>
                     </div>
                 </Col>
             </Row>
