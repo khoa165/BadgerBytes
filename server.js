@@ -16,6 +16,7 @@ const API = 'api/v1';
 app.use(`/${API}/auth`, require(`./${API}/routes/auth`));
 app.use(`/${API}/users`, require(`./${API}/routes/users`));
 app.use(`/${API}/items`, require(`./${API}/routes/items`));
+app.use(`/${API}/orders`, require(`./${API}/routes/orders`));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

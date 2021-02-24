@@ -11,57 +11,61 @@ const { check } = require('express-validator');
 // User controller.
 const orderController = require('../controllers/order');
 
+// @route     POST /orders/items
+// @desc      Add item to order
+// @access    Public
+router.post(
+  '/items',
+  auth,
+  [
+    check('id').notEmpty().withMessage('Item id missing!'),
+    check('quantity')
+      .notEmpty()
+      .isNumeric()
+      .withMessage('Quantity must be a whole number!'),
+  ],
+  orderController.addItem
+);
+
 // @route     POST /order
 // @desc      Submit order
 // @access    Public
 router.post(
-    '/',
-    auth,
-    [
-        // Data validations.
-        check('is_delivery')
-            .notEmpty()
-            .withMessage('Please indicate in delivery param if delivery (true) or pickup (false).')
-            .isBoolean()
-            .withMessage('Please enter delivery as either true or false.'),
-        check('items')
-            .notEmpty()
-            .withMessage('Must add items to submit an order.'),
-        check('time_to_pickup')
-            .notEmpty()
-            .withMessage('Include time until pickup or delivery in minutes.')
-            .isNumeric()
-            .withMessage('Please enter a number of minutes until pickup or delivery.'),
-    ],
-    orderController.submit
+  '/',
+  auth,
+  [
+    // Data validations.
+    check('pickup_time')
+      .optional()
+      .isNumeric()
+      .withMessage('Please enter a number of minutes until pickup'),
+  ],
+  orderController.submit
 );
 
 // @route     PUT /order
 // @desc      Update an order
 // @access    Private
 router.put(
-    '/',
-    auth,
-    [
-        // Data validations.
-        check('complete')
-            .isBoolean()
-            .optional({nullable: true})
-            .withMessage('Complete must be either true or false!'),
-        check('priority')
-            .isIn([1, 2, 3])
-            .optional({nullable: true})
-            .withMessage('Priority must be either 1, 2, or 3!'),
-        check('_id')
-            .notEmpty()
-            .withMessage('Please enter the id of the order you are updating.'),
-    ],
-    orderController.update
+  '/:order_id',
+  auth,
+  [
+    // Data validations.
+    check('completed')
+      .notEmpty()
+      .isBoolean()
+      .withMessage('Complete must be either true or false!'),
+    check('priority')
+      .notEmpty()
+      .isIn([1, 2, 3])
+      .withMessage('Priority must be either 1, 2, or 3!'),
+  ],
+  orderController.update
 );
 
-// @route     GET /order
-// @desc      Get all orders
+// @route     GET /orders
+// @desc      Get all unfinished orders
 // @access    Private
-router.get('/', auth, orderController.collect);
+router.get('/', auth, orderController.getUnfinishedOrders);
 
 module.exports = router;
