@@ -11,7 +11,7 @@ class Login extends Component{
         }
     }
 
-    submitForm = async (e) => {
+    async submitForm(e){
         e.preventDefault()
         await axios.post('/api/v1/auth', {
             email: this.state.email,
@@ -24,7 +24,7 @@ class Login extends Component{
         })
     }
 
-    handleChange = async (event) => {
+    async handleChange(event){
         const { target } = event;
         const value = target.value;
         const { name } = target;

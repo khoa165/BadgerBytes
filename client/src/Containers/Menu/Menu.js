@@ -4,6 +4,11 @@ import Menuheader from '../../Components/menuSections/menuHeader/menuHeader';
 
 
 class Menu extends Component{
+
+    constructor(props) {
+        super(props);
+        
+      }
     
     render(){
         let dtr=this.props.loaded?(
