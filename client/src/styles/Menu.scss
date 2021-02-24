@@ -1,0 +1,48 @@
+@import 'Variables';
+
+.admin-welcome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.go-back-link:hover {
+  text-decoration: none;
+}
+
+.food-item-title,
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .fa-edit {
+    font-size: 24px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+#menu .card-columns .item-card {
+  margin-bottom: 25px;
+}
+
+.quant-button {
+  display: flex;
+  align-items: center;
+  float: left;
+
+  .change-quant-icon {
+    .fas {
+      color: $brand-primary-color;
+    }
+    width: 20px;
+    height: 20px;
+    border: 2px solid $brand-primary-color;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

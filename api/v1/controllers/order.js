@@ -5,151 +5,187 @@ const { validationResult } = require('express-validator');
 const Order = require('../../../models/Order');
 
 module.exports = {
-    submit: async (req, res, _next) => {
+  addItem: async (req, res, _next) => {
+    // Check for errors.
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-        // Check for errors.
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+    // Destructuring data from request body.
+    const { id, quantity } = req.body;
+
+    try {
+      let cart = await Order.findOne({
+        user: req.user.id,
+        paid: false,
+        completed: false,
+      });
+
+      const item = await Item.findById(id);
+      if (!item) {
+        return res.status(404).json({ errors: [{ msg: 'Item not found' }] });
+      }
+
+      if (!cart) {
+        cart = new Order({ items: [], cost: item.item_cost * quantity });
+        cart.user = req.user.id;
+        cart.items.push({ id, quantity });
+        await cart.save();
+      } else {
+        const existedItem = await Order.findOne({
+          _id: cart._id,
+          'items.$.id': id,
+        });
+        if (existedItem) {
+          console.log('update');
+          await Order.updateOne(
+            { _id: cart._id, 'items.$.id': id },
+            {
+              $inc: {
+                'items.$.quantity': quantity,
+                cost: item.item_cost * quantity,
+              },
+            }
+          );
+        } else {
+          console.log('push');
+          cart.items.push({ id, quantity });
+          cart.cost += item.item_cost * quantity;
+          await cart.save();
         }
+      }
 
-        // Destructuring data from request body.
-        const {
-            items,
-            time_to_pickup,
-            car_description,
-            address,
-            is_delivery,
-            notes,
-        } = req.body;
+      return res.status(200).json({ cart });
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({
+        errors: [
+          { msg: 'Unexpected server error happened. Please try again later!' },
+        ],
+      });
+    }
+  },
 
-        try {
-            const errors = [];
-            let user = await User.findById(req.user.id);
+  submit: async (req, res, _next) => {
+    // Check for errors.
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-            // Add time to pickup to time now to get completion time
-            let completion_time = new Date(new Date().getTime() + time_to_pickup*60000);
+    // Destructuring data from request body.
+    const { pickup_time, car_description, notes } = req.body;
 
-            // If delivery, make sure address is included
-            if (is_delivery && address==undefined) {
-                errors.push({
-                    msg: 'Must include an address for delivery orders.',
-                });
-            }
+    try {
+      const errors = [];
 
-            // Add up items to get cost
-            let cost = 0;
-            for (i = 0; i < items.length; i++) {
-                let curr_item = await Item.findById(items[i]);
-                cost += curr_item.item_cost;
-            }
+      // Add time to pickup to time now to get completion time
+      let completion_time = new Date(
+        new Date().getTime() + time_to_pickup * 60000
+      );
 
-            if (errors.length > 0) {
-                return res.status(400).json({ errors });
-            }
+      const cart = await Order.findOne({
+        user: req.user.id,
+        paid: false,
+        completed: false,
+      });
 
-            // Create new order.
-            order = new Order({
-                user,
-                items,
-                completion_time,
-                cost,
-                is_delivery,
-                car_description,
-                address,
-                notes,
-            });
-            await order.save();
-            return res.status(200).json( {order} );
+      cart.paid = true;
+      cart.ordered_at = new Date();
+      if (pickup_time) {
+        cart.pickup_time = pickup_time;
+      } else {
+        cart.pickup_time = 60;
+      }
+      if (car_description) cart.car_description = car_description;
+      if (notes) cart.notes = notes;
 
-        } catch (err) {
-            console.error(err.message);
-            return res.status(500).json({
-                errors: [
-                    { msg: 'Unexpected server error happened. Please try again later!' },
-                ],
-            });
+      await cart.save();
+      return res.status(200).json({ cart });
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({
+        errors: [
+          { msg: 'Unexpected server error happened. Please try again later!' },
+        ],
+      });
+    }
+  },
+
+  update: async (req, res, _next) => {
+    // Check for errors.
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Destructuring data from request body.
+    const { priority, completed } = req.body;
+    const id = req.params.order_id;
+
+    try {
+      // Check if user attempting to create or update menu item is admin
+      if (req.user) {
+        let user = await User.findById(req.user.id);
+        if (!user.admin) {
+          return res.status(401).json({
+            errors: [
+              {
+                msg:
+                  'Unauthorized access, only staff and admin can update orders!',
+              },
+            ],
+          });
         }
-    },
+      }
+      const order = await Order.findById(id);
 
-    update: async (req, res, _next) => {
-        // Check for errors.
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+      order.priority = priority;
+      order.completed = completed;
+
+      await order.save();
+      return res.status(200).json({ msg: 'Order updated!' });
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({
+        errors: [
+          { msg: 'Unexpected server error happened. Please try again later!' },
+        ],
+      });
+    }
+  },
+
+  getUnfinishedOrders: async (req, res, _next) => {
+    try {
+      // Check if user attempting to create or update menu item is admin
+      if (req.user) {
+        let user = await User.findById(req.user.id);
+        if (!user.admin && !user.staff) {
+          return res.status(401).json({
+            errors: [
+              {
+                msg:
+                  'Unauthorized access, only staff and admin can view all orders!',
+              },
+            ],
+          });
         }
+      }
+      // Return all orders
+      const orders = await Order.find({
+        paid: true,
+        completed: false,
+      });
 
-        // Destructuring data from request body.
-        const {
-            priority,
-            complete,
-            _id,
-        } = req.body;
-
-        try {
-            // Check if user attempting to create or update menu item is admin
-            if(req.user) {
-                let user = await User.findById(req.user.id);
-                if(!user.admin) {
-                    return res.status(401).json({ errors: [{ msg: 'Unauthorized access, only staff and admin can update orders!' }] });
-                }
-            }
-            const errors = [];
-            const order = await Order.findById(_id);
-
-            // Check that either complete or priority is added
-            if (priority==undefined && complete==undefined) {
-                errors.push({
-                    msg: 'Please enter either complete or priority to update order!',
-                });
-            }
-
-            // Check that they are not updating to the same value ?
-
-            if (errors.length > 0) {
-                return res.status(400).json({ errors });
-            }
-
-            if (priority!=undefined) order.priority = priority;
-            if (complete!=undefined) order.complete = complete;
-            await order.save();
-            return res.status(200).json( {"msg": "Order updated!"} );
-
-        } catch (err) {
-            console.error(err.message);
-            return res.status(500).json({
-                errors: [
-                    { msg: 'Unexpected server error happened. Please try again later!' },
-                ],
-            });
-        }
-    },
-
-    collect: async (req, res, _next) => {
-        try {
-            // Check if user attempting to create or update menu item is admin
-            if(req.user) {
-                let user = await User.findById(req.user.id);
-                if(!user.admin && !user.staff) {
-                    return res.status(401).json({ errors: [{ msg: 'Unauthorized access, only staff and admin can get all orders!' }] });
-                }
-            }
-            // Return all orders
-            const orders = await Order.find();
-
-            if (!orders) {
-                return res.status(404).json({ errors: [{ msg: 'No orders in the system!' }] });
-            }
-
-            return res.status(200).json( orders );
-        } catch (err) {
-            console.error(err.message);
-            return res.status(500).json({
-                errors: [
-                    { msg: 'Unexpected server error happened. Please try again later!' },
-                ],
-            });
-        }
-    },
-
+      return res.status(200).json(orders);
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({
+        errors: [
+          { msg: 'Unexpected server error happened. Please try again later!' },
+        ],
+      });
+    }
+  },
 };

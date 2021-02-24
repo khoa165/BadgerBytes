@@ -1,0 +1,34 @@
+@import 'Variables';
+
+#landing-page {
+  height: 100vh;
+  background: url('https://badgerherald.com/wordpress/wp-content/uploads/2013/10/586x286FoodPaulsPelmeni.jpg')
+    no-repeat center center;
+  background-size: cover;
+  text-align: center;
+  color: #eee;
+
+  .overlay {
+    background: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .content {
+    background: rgba(0, 0, 0, 0.6);
+    margin: 40vh auto;
+    padding: 25px;
+  }
+
+  .btn {
+    width: 100px;
+  }
+
+  h1 {
+    font-weight: bold;
+    font-size: 50px;
+  }
+}
