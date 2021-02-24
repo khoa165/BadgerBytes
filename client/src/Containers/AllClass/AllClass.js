@@ -10,6 +10,7 @@ import Offer from '../Offer/Offer';
 import axios from 'axios';
 import ForLoad from '../../Components/miscelleous/forLoad';
 import Login from '../Login/Login';
+import item from '../../Components/Order/Items/Item/item';
 
 class allClass extends Component{
     constructor(props) {
@@ -39,15 +40,44 @@ class allClass extends Component{
                 isStaff: res.data.staff
             });
         })
-        console.log('handling auth')
     }
 
     componentDidMount(){
         // Check if user has a token
         this.handleAuth();
         axios.get("https://twobrother0927.firebaseio.com/.json").then((data)=>{
-            this.setState({data:data.data,loaded:true});
-        }).catch(err=>console.log("Some Error")).then(console.log("Lets trye this "));
+            this.setState({data:data.data});
+            axios.get("/api/v1/items").then( menuItems => {
+                console.log(menuItems.data);
+                console.log(this.processFoodData(menuItems.data));
+    
+                let newData = {...this.state.data};
+                newData.menu = this.processFoodData(menuItems.data);
+                this.setState({ data: newData, loaded: true});
+                console.log(this.state.data)
+            });
+        }).catch(err=>console.log("Some Error")).then(console.log("Lets try this "));
+    }
+
+    processFoodData(menuItems) {
+        let formattedItems = {}
+
+        menuItems.forEach( item => {
+            // console.log(item)
+            let itemObject = {
+                image: item.picture_link,
+                price: item.item_cost,
+                availability: item.item_availability,
+                description: item.item_description
+            };
+            
+            if (item.item_category in formattedItems) {
+                formattedItems[item.item_category][item.item_name] = itemObject
+            } else {
+                formattedItems[item.item_category] = {[item.item_name]: itemObject}
+            }
+        });
+        return formattedItems;
     }
 
     addItem(obj){
