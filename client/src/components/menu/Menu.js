@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import { getMenuItems } from '../../actions/item';
+import { addToCart } from '../../actions/cart';
 import Items from './Items';
 import { Button } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
@@ -30,6 +31,7 @@ const Menu = ({
           <Button color='danger' onClick={() => history.push('/items/new')}>
             Add new Item
           </Button>
+          
         </div>
       ) : (
         <h1 className='text-danger mb-5'>Welcome {user && user.name},</h1>
@@ -51,6 +53,7 @@ const mapStateToProps = (state) => ({
 
 const mapFunctionsToProps = {
   getMenuItems,
+
 };
 
 export default connect(mapStateToProps, mapFunctionsToProps)(withRouter(Menu));
