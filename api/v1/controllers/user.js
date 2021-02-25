@@ -162,6 +162,8 @@ module.exports = {
       user.phone = phone;
       user.address = address;
       await user.save();
+
+      return res.status(200).json({ user });
     } catch (err) {
       console.error(err.message);
       return res.status(500).json({

@@ -5,6 +5,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   USER_LOADED,
+  UPDATE_SUCCESS,
+  UPDATE_FAIL,
   AUTH_ERROR,
   LOGOUT,
 } from './types';
@@ -81,7 +83,9 @@ export const register = ({
 
     // Call reducer to load user.
     dispatch(loadUser());
-    toast.success('You successfully created an account! Welcome to Coffee Up!');
+    toast.success(
+      'You successfully created an account! Welcome to Badger Bytes!'
+    );
   } catch (err) {
     // Loop through errors and notify user.
     const errors = err.response.data.errors;
@@ -135,6 +139,57 @@ export const login = ({ email, password }) => async (dispatch) => {
     // Call reducer to remove auth token.
     dispatch({
       type: LOGIN_FAIL,
+    });
+  }
+};
+
+// Update user.
+export const updateUser = ({
+  name,
+  phone,
+  address,
+  email,
+  password,
+  confirmedPassword,
+}) => async (dispatch) => {
+  // Request headers.
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  // User data.
+  const body = JSON.stringify({
+    name,
+    phone,
+    address,
+    email,
+    password,
+    confirmedPassword,
+  });
+
+  try {
+    // Send request to API endpoint.
+    const res = await axios.put(`/${API}/users`, body, config);
+
+    // Call reducer to update user.
+    dispatch({
+      type: UPDATE_SUCCESS,
+      payload: res.data,
+    });
+
+    toast.success('You successfully updated your information!');
+  } catch (err) {
+    // Loop through errors and notify user.
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => toast.error(error.msg));
+    }
+
+    // Call reducer to indicate fail registration.
+    dispatch({
+      type: UPDATE_FAIL,
     });
   }
 };

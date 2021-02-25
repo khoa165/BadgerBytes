@@ -15,7 +15,7 @@ import {
 
 const Item = ({ auth: { user }, item, history, setEditedItem }) => {
   const [num, setNum] = useState(1);
-
+  // Destructure
   const {
     item_name,
     item_cost,

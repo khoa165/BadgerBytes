@@ -44,13 +44,14 @@ router.put(
     check('email', 'Please enter a valid email!').isEmail(),
     check('phone').notEmpty(),
     check('address').notEmpty(),
-    check('oldPassword').notEmpty(),
+    check('oldPassword').optional().notEmpty(),
     check('newPassword')
+      .optional()
       .isLength({ min: 6, max: 20 })
       .withMessage('Password must be between 6 and 20 characters long!')
       .matches(/\d/)
       .withMessage('Password must contain a number!'),
-    check('confirmedNewPassword').notEmpty(),
+    check('confirmedNewPassword').optional().notEmpty(),
   ],
   userController.update
 );
