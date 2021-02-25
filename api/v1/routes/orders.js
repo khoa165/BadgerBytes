@@ -68,4 +68,9 @@ router.put(
 // @access    Private
 router.get('/', auth, orderController.getUnfinishedOrders);
 
+// @route     GET /orders/me
+// @desc      Get my current order (cart)
+// @access    Private
+router.get('/me', auth, orderController.getCart);
+
 module.exports = router;

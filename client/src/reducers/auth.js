@@ -4,6 +4,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   USER_LOADED,
+  UPDATE_SUCCESS,
+  UPDATE_FAIL,
   AUTH_ERROR,
   LOGOUT,
 } from '../actions/types';
@@ -30,6 +32,9 @@ export default function auth_red(state = initialState, action) {
       localStorage.setItem('token', payload.token);
       // Set isAuthenticated to true and loading to false.
       return { ...state, ...payload, isAuthenticated: true, loading: false };
+    case UPDATE_SUCCESS:
+      return { ...state, user: payload };
+    case UPDATE_FAIL:
     case REGISTER_FAIL:
     case LOGIN_FAIL:
     case AUTH_ERROR:
