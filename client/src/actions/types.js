@@ -9,6 +9,9 @@ export const UPDATE_FAIL = 'UPDATE_FAIL';
 export const AUTH_ERROR = 'AUTH_ERROR';
 export const LOGOUT = 'LOGOUT';
 
+// Orders.
+export const GET_UNFINISHED_ORDERS = 'GET_UNFINISHED_ORDERS';
+
 // Items.
 export const GET_MENU_ITEMS = 'GET_MENU_ITEMS';
 export const SET_EDITED_ITEM = 'SET_EDITED_ITEM';

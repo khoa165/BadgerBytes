@@ -169,7 +169,7 @@ module.exports = {
       const orders = await Order.find({
         paid: true,
         completed: false,
-      });
+      }).sort({ priority: -1, ordered_at: 1 });
 
       return res.status(200).json(orders);
     } catch (err) {
