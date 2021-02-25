@@ -39,7 +39,7 @@ const OrderSchema = new mongoose.Schema({
     default: 1,
   },
 
-  cost: {
+  total: {
     type: Number,
     required: true,
   },

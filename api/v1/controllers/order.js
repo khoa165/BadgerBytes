@@ -28,7 +28,7 @@ module.exports = {
       }
 
       if (!cart) {
-        cart = new Order({ items: [], cost: item.item_cost * quantity });
+        cart = new Order({ items: [], total: item.item_cost * quantity });
         cart.user = req.user.id;
         cart.items.push({ id, quantity });
         await cart.save();
@@ -44,14 +44,14 @@ module.exports = {
             {
               $inc: {
                 'items.$.quantity': quantity,
-                cost: item.item_cost * quantity,
+                total: item.item_cost * quantity,
               },
             }
           );
         } else {
           console.log('push');
           cart.items.push({ id, quantity });
-          cart.cost += item.item_cost * quantity;
+          cart.total += item.item_cost * quantity;
           await cart.save();
         }
       }
@@ -78,13 +78,6 @@ module.exports = {
     const { pickup_time, car_description, notes } = req.body;
 
     try {
-      const errors = [];
-
-      // Add time to pickup to time now to get completion time
-      let completion_time = new Date(
-        new Date().getTime() + time_to_pickup * 60000
-      );
-
       const cart = await Order.findOne({
         user: req.user.id,
         paid: false,
@@ -179,6 +172,47 @@ module.exports = {
       });
 
       return res.status(200).json(orders);
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({
+        errors: [
+          { msg: 'Unexpected server error happened. Please try again later!' },
+        ],
+      });
+    }
+  },
+
+  getCart: async (req, res, _next) => {
+    // Check for errors.
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      let cart = await Order.findOne({
+        user: req.user.id,
+        paid: false,
+        completed: false,
+      }).populate({
+        path: 'items.id',
+        select: 'item_name item_cost picture link',
+      });
+
+      if (!cart) {
+        return res.status(200).json({ items: [] });
+      } else {
+        const items = cart.items.map((item) => {
+          return {
+            id: item.id._id,
+            quantity: item.quantity,
+            name: item.id.item_name,
+            price: item.id.item_cost,
+            url: item.id.picture_link,
+          };
+        });
+        return res.status(200).json({ items });
+      }
     } catch (err) {
       console.error(err.message);
       return res.status(500).json({
