@@ -10,6 +10,8 @@ import Login from '../auth/Login';
 import NotFound from '../pages/NotFound';
 // Layout components.
 import NavigationBar from '../layout/NavigationBar';
+// Account component.
+import Account from '../account/Account';
 // Menu component.
 import Menu from '../menu/Menu';
 import ItemCreate from '../menu/ItemCreate';
@@ -31,6 +33,7 @@ const Routes = () => {
         <Switch>
           <Route exact path='/register' component={Register} />
           <Route exact path='/login' component={Login} />
+          <PrivateRoute exact path='/account' component={Account} />
           <PrivateRoute exact path='/menu' component={Menu} />
           <PrivateRoute exact path='/items/new' component={ItemCreate} />
           <PrivateRoute exact path='/items/:item_id' component={ItemEdit} />

@@ -23,6 +23,12 @@ const NavigationBar = ({
   const authLinks = (
     <Fragment>
       <NavItem>
+        <Link to='/account' className='nav-link'>
+          <i className='fas fa-user mr-1' />
+          Account
+        </Link>
+      </NavItem>
+      <NavItem>
         <Link to='/menu' className='nav-link'>
           <i className='fas fa-hamburger mr-1' />
           Menu
