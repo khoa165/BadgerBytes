@@ -13,7 +13,7 @@ import {Row,Col} from 'reactstrap'
                         <Col xs={5} className=" mr-5 mt-2 text-center"> <p>{name}</p></Col>
                         <Col xs={2} className=" mx-2 mt-2 "><Row className="justify-content-center"><p class="mr-2">{quantity}</p>
                         </Row></Col>
-                        <Col xs={2} className=" mx-2 mt-2 text-center"><p>{price}</p>
+                        <Col xs={2} className=" mx-2 mt-2 text-center"><p>${price.toFixed(2)}</p>
                         
                         </Col>
                         

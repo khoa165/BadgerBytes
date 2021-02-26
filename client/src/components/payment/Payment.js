@@ -16,7 +16,9 @@ export const Payment = ({history,
     cart,location}) => {
         
         useEffect(() => {
-
+            if(cart === null || cart === undefined || cart.length === 0) {
+                history.push('/cart');
+            }
             getTotal();
         
             // eslint-disable-next-line
@@ -28,7 +30,7 @@ export const Payment = ({history,
             total = total + eachItem.price
         ))
         console.log("total",total)
-        return total;
+        return total.toFixed(2);
     }
 
 
@@ -42,7 +44,7 @@ export const Payment = ({history,
 
         </div>
       ) : (
-        <h1 className='text-danger mb-5'>Welcome {user && user.name},</h1>
+        <h1 className='text-danger mb-5'>Welcome {user && user.name}</h1>
       )}
       
             <Container className="border border-2 shadow pb-4">
@@ -61,7 +63,7 @@ export const Payment = ({history,
                         <CartItem key={eachItem} item={eachItem}></CartItem>
                     ))}
                 <Row className="justify-content-center ">
-                    <h3 class="mx-2">Total: </h3><h3>{getTotal()}</h3>
+                    <h3 class="mx-2">Total: ${getTotal()}</h3>
                 </Row>
                 <Row className="mt-4 ml-4"><Info pickupInfo={location.state.info}/></Row>
                 

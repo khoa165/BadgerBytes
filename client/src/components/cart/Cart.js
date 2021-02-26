@@ -34,7 +34,7 @@ const Cart = ({
         cart.map((eachItem)=>(
             total = total + eachItem.price
         ))
-        return total;
+        return total.toFixed(2);
     }
 
     const paymentForm = () =>{
@@ -62,7 +62,7 @@ const Cart = ({
           </Button>
         </div>
       ) : (
-        <h1 className='text-danger mb-5'>Welcome {user && user.name},</h1>
+        <h1 className='text-danger mb-5'>Welcome {user && user.name}</h1>
       )}
             <Container className="border border-2 shadow pb-4">
                 <Row>
@@ -78,7 +78,7 @@ const Cart = ({
                         <CartItem key={eachItem} item={eachItem}></CartItem>
                     ))}
                 <Row className="justify-content-center">
-                    <h3 class="mx-2">Total: </h3><h3>{getTotal()}</h3>
+                    <h3 class="mx-2">Total: ${getTotal()}</h3>
                 </Row>
                 
             </Container>
