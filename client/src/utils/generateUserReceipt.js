@@ -30,18 +30,17 @@ const generateUserReceipt = (user,items,paymentInfo,paymentOption) => {
   doc.text(`Email: ${user.email}`, 15, 44);
   doc.text(`Ordered at ${moment().format('HH:mm')} on ${moment().format('ddd, MMM Do, YYYY')}`,15,55);
 
-  doc.autoTable(tableColumn, tableRows, { startY: 70 });
   doc.setFont('arial', 'bold');
   doc.setFontSize(20);
-  doc.text(`PICKUP DETAILS`,15,100)
+  doc.text(`PICKUP DETAILS`,15,70)
   doc.setFont('arial', 'normal');
   doc.setFontSize(14);
-  doc.text(`Time to pickup: ${paymentInfo.timeRange} minutes`, 15,107);
-  doc.text(`Car Description: ${paymentInfo.car} `, 15,114);
-  doc.text(`Additional notes: ${paymentInfo.note}`, 15,121);
-  doc.text(`Payment option: ${paymentOption}`, 15,128);
+  doc.text(`Time to pickup: ${paymentInfo.timeRange} minutes`, 15,77);
+  doc.text(`Car Description: ${paymentInfo.car} `, 15,84);
+  doc.text(`Additional notes: ${paymentInfo.note}`, 15,91);
+  doc.text(`Payment option: ${paymentOption}`, 15,98);
 
-
+  doc.autoTable(tableColumn, tableRows, { startY: 110 });
 
   doc.save(`Order_receipt.pdf`);
 };

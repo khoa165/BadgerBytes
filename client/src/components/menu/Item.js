@@ -64,7 +64,7 @@ const Item = ({
           </div>
         ) : (
           <CardTitle tag='h5'>
-            {item_name} (${item_cost * num})
+            {item_name} (${(item_cost * num).toFixed(2)})
           </CardTitle>
         )}
         <CardSubtitle tag='h6' className='mb-2 text-muted'>
@@ -72,7 +72,7 @@ const Item = ({
         </CardSubtitle>
         <CardText>Description: {item_description}</CardText>
 
-        {user && user.admin ? (
+        {user && (user.admin || user.staff) ? (
           <div>
             <Label className='m-0' for={_id}>
               Item available: {available ? 'yes' : 'no'}
