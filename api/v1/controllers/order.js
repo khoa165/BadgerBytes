@@ -244,4 +244,34 @@ module.exports = {
       });
     }
   },
+
+  emptyCart: async (req, res, _next) => {
+    // Check for errors.
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      let cart = await Order.findOne({
+        user: req.user.id,
+        paid: false,
+        completed: false,
+      });
+
+      if (cart) {
+        cart.items = [];
+        await cart.save();
+      }
+
+      return res.status(200).json({ msg: 'Cart emptied!' });
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({
+        errors: [
+          { msg: 'Unexpected server error happened. Please try again later!' },
+        ],
+      });
+    }
+  },
 };
