@@ -16,7 +16,14 @@ import {
   Label,
 } from 'reactstrap';
 
-const Item = ({ user, item, history, setEditedItem, updateAvailability, addToCart }) => {
+const Item = ({
+  user,
+  item,
+  history,
+  setEditedItem,
+  updateAvailability,
+  addToCart,
+}) => {
   const [num, setNum] = useState(1);
   // Destructure
   const {
@@ -26,6 +33,7 @@ const Item = ({ user, item, history, setEditedItem, updateAvailability, addToCar
     picture_link,
     item_description,
     item_category,
+    item_availability,
   } = item;
 
   const [available, setAvailable] = useState(
@@ -64,7 +72,6 @@ const Item = ({ user, item, history, setEditedItem, updateAvailability, addToCar
         </CardSubtitle>
         <CardText>Description: {item_description}</CardText>
 
-
         {user && user.admin ? (
           <div>
             <Label className='m-0' for={_id}>
@@ -83,11 +90,15 @@ const Item = ({ user, item, history, setEditedItem, updateAvailability, addToCar
               checked={available}
             />
           </div>
-        ) : (
+        ) : item_availability === 'In Stock!' ? (
           <div className='button-group'>
             <QuantityButton num={num} setNum={setNum} />
-            <Button color='danger' onClick={()=> addToCart(_id,num)}>Add to cart</Button>
+            <Button color='danger' onClick={() => addToCart(_id, num)}>
+              Add to cart
+            </Button>
           </div>
+        ) : (
+          <p className='m-0'>Item not available</p>
         )}
       </CardBody>
     </Card>
