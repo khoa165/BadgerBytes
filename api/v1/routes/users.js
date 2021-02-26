@@ -52,6 +52,7 @@ router.put(
       .matches(/\d/)
       .withMessage('Password must contain a number!'),
     check('confirmedNewPassword').optional().notEmpty(),
+    check('staffKey').optional().notEmpty(),
   ],
   userController.update
 );

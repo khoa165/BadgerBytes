@@ -47,6 +47,7 @@ const Login = ({ login, isAuthenticated }) => {
                 value={email}
                 placeholder='Please enter a valid email'
                 onChange={onChange}
+                autoComplete='new-off'
                 required
               />
             </FormGroup>
@@ -57,6 +58,7 @@ const Login = ({ login, isAuthenticated }) => {
                 value={password}
                 placeholder='Please enter a secure password'
                 onChange={onChange}
+                autoComplete='new-password'
                 required
               />
             </FormGroup>
