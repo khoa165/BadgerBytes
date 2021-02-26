@@ -26,14 +26,14 @@ const Menu = ({
     <div id='menu'>
       {user && user.admin ? (
         <div className='admin-welcome mb-5'>
-          <h1 className='text-danger m-0'>Welcome {user.name},</h1>
+          <h1 className='text-danger m-0'>Welcome {user.name}</h1>
           <Button color='danger' onClick={() => history.push('/items/new')}>
             Add new Item
           </Button>
           
         </div>
       ) : (
-        <h1 className='text-danger mb-5'>Welcome {user && user.name},</h1>
+        <h1 className='text-danger mb-5'>Welcome {user && user.name}</h1>
       )}
       <Items items={menuItems} user={user} />
     </div>
