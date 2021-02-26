@@ -21,48 +21,47 @@ router.get('/', itemsController.getAllMenuItems);
 router.get('/:category', itemsController.getCategoryItems);
 
 // @route     POST /items
-// @desc      Create/update food item 
+// @desc      Create/update food item
 // @access    Admin
 router.post(
-    '/',
-    auth,
+  '/',
+  auth,
 
-    [
-        // Data validations.
-        check('item_name', 'Menu item name is required!').notEmpty(),
-        check('picture_link', 'Menu item picture is required!')
-            .notEmpty()
-            .isURL(),
-        check('item_cost', 'Menu item cost with $ is required!').notEmpty()
-            .isNumeric()
-            .withMessage('Please enter cost as an integer.'),
-        check('item_description', 'Menu item description is required!').notEmpty(),
-        check('item_category',).notEmpty(),
-        check('item_availability')
-            .notEmpty()
-            .isIn(['In Stock!', 'Out of Stock'])
-            .withMessage(
-                'Item availability must be either "In Stock!" or "Out of Stock"'
-            ),
-    ],
-    itemsController.createMenuItem
+  [
+    // Data validations.
+    check('item_name', 'Menu item name is required!').notEmpty(),
+    check('picture_link', 'Menu item picture is required!').notEmpty().isURL(),
+    check('item_cost', 'Menu item cost with $ is required!')
+      .notEmpty()
+      .isNumeric()
+      .withMessage('Please enter cost as an integer.'),
+    check('item_description', 'Menu item description is required!').notEmpty(),
+    check('item_category').notEmpty(),
+    check('item_availability')
+      .notEmpty()
+      .isIn(['In Stock!', 'Out of Stock'])
+      .withMessage(
+        'Item availability must be either "In Stock!" or "Out of Stock"'
+      ),
+  ],
+  itemsController.createMenuItem
 );
 
-// @route     put /items
+// @route     put /items/:item_id
 // @desc      Update availability of existing menu item
 // @access    Staff version
 router.put(
-    '/',
-    auth,
-    [
-        check('item_availability')
-            .notEmpty()
-            .isIn(['In Stock!', 'Out of Stock'])
-            .withMessage(
-                'Item availability must be either "In Stock!" or "Out of Stock"'
-            ),
-    ],
-    itemsController.updateAvailability
-)
+  '/:item_id',
+  auth,
+  [
+    check('item_availability')
+      .notEmpty()
+      .isIn(['In Stock!', 'Out of Stock'])
+      .withMessage(
+        'Item availability must be either "In Stock!" or "Out of Stock"'
+      ),
+  ],
+  itemsController.updateAvailability
+);
 
 module.exports = router;

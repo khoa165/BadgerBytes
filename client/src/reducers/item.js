@@ -4,6 +4,7 @@ import {
   CLEAR_EDITED_ITEM,
   ADD_ITEM,
   UPDATE_ITEM,
+  UPDATE_ITEM_AVAILABILITY,
 } from '../actions/types';
 
 const initialState = {
@@ -29,6 +30,7 @@ export default function item_red(state = initialState, action) {
         loading: false,
         menuItems: [...state.menuItems, payload],
       };
+    case UPDATE_ITEM_AVAILABILITY:
     case UPDATE_ITEM:
       return {
         ...state,

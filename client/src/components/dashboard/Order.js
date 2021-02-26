@@ -136,7 +136,7 @@ const Order = ({ order, update }) => {
             color='danger'
             onClick={() => generateOrderReceipt(order)}
           >
-            Generate receipt
+            Print order
           </Button>
         </div>
       </CardBody>

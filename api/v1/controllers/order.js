@@ -121,7 +121,7 @@ module.exports = {
       // Check if user attempting to create or update menu item is admin
       if (req.user) {
         let user = await User.findById(req.user.id);
-        if (!user.admin) {
+        if (!user.admin && !user.staff) {
           return res.status(401).json({
             errors: [
               {

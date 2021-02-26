@@ -35,6 +35,7 @@ export default function auth_red(state = initialState, action) {
     case UPDATE_SUCCESS:
       return { ...state, user: payload };
     case UPDATE_FAIL:
+      return { ...state, loading: false };
     case REGISTER_FAIL:
     case LOGIN_FAIL:
     case AUTH_ERROR:

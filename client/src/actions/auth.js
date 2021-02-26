@@ -144,39 +144,25 @@ export const login = ({ email, password }) => async (dispatch) => {
 };
 
 // Update user.
-export const updateUser = ({
-  name,
-  phone,
-  address,
-  email,
-  password,
-  confirmedPassword,
-}) => async (dispatch) => {
-  // Request headers.
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
-
-  // User data.
-  const body = JSON.stringify({
-    name,
-    phone,
-    address,
-    email,
-    password,
-    confirmedPassword,
-  });
-
+export const updateUser = (userObj) => async (dispatch) => {
   try {
+    // Request headers.
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    // User data.
+    const body = JSON.stringify(userObj);
+
     // Send request to API endpoint.
     const res = await axios.put(`/${API}/users`, body, config);
 
     // Call reducer to update user.
     dispatch({
       type: UPDATE_SUCCESS,
-      payload: res.data,
+      payload: res.data.user,
     });
 
     toast.success('You successfully updated your information!');

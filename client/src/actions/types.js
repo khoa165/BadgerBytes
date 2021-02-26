@@ -19,6 +19,7 @@ export const SET_EDITED_ITEM = 'SET_EDITED_ITEM';
 export const CLEAR_EDITED_ITEM = 'CLEAR_EDITED_ITEM';
 export const ADD_ITEM = 'ADD_ITEM';
 export const UPDATE_ITEM = 'UPDATE_ITEM';
+export const UPDATE_ITEM_AVAILABILITY = 'UPDATE_ITEM_AVAILABILITY';
 
 // Cart
 export const GET_CART = 'GET_CART';
