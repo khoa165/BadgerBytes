@@ -14,6 +14,7 @@ import {
   Button,
   Badge,
 } from 'reactstrap';
+import generateOrderReceipt from '../../utils/generateOrderReceipt';
 
 const Order = ({ order, update }) => {
   const {
@@ -22,7 +23,8 @@ const Order = ({ order, update }) => {
     completed,
     total,
     items,
-    note,
+    notes,
+    car_description,
     user: { name, email, phone },
   } = order;
 
@@ -117,10 +119,26 @@ const Order = ({ order, update }) => {
         <CardSubtitle tag='h6' className='mb-2 text-muted'>
           Order #{_id}
         </CardSubtitle>
-        {note && <CardText>{note}</CardText>}
+
         <OrderItems items={items} total={total} />
 
-        <Button>Button</Button>
+        <CardText className='m-0'>
+          <span className='text-bold'>Notes:</span> {notes ? notes : 'N/A'}
+        </CardText>
+        <CardText className='m-0'>
+          <span className='text-bold'>Car description</span>:{' '}
+          {car_description ? car_description : 'N/A'}
+        </CardText>
+
+        <div className='text-center'>
+          <Button
+            className='mt-2'
+            color='danger'
+            onClick={() => generateOrderReceipt(order)}
+          >
+            Generate receipt
+          </Button>
+        </div>
       </CardBody>
     </Card>
   );

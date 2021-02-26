@@ -27,7 +27,7 @@ router.post(
   orderController.addItem
 );
 
-// @route     POST /order
+// @route     POST /ordera
 // @desc      Submit order
 // @access    Public
 router.post(
