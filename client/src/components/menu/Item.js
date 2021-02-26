@@ -55,7 +55,7 @@ const Item = ({
         {user && user && user.admin ? (
           <div className='food-item-title'>
             <CardTitle tag='h5'>
-              {item_name} (${item_cost * num})
+              {item_name} (${(item_cost * num).toFixed(2)})
             </CardTitle>
             <i
               className='fas fa-edit'
