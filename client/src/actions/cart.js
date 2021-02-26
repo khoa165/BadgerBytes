@@ -1,13 +1,10 @@
 import axios from 'axios';
-import {
-    GET_CART,
-} from './types';
+import { GET_CART, EMPTY_CART } from './types';
 import { toast } from 'react-toastify';
 
 const API = 'api/v1';
 
-
-export const getCart =() => async(dispatch)=>{
+export const getCart = () => async (dispatch) => {
   // Request headers.
 
   try {
@@ -18,7 +15,6 @@ export const getCart =() => async(dispatch)=>{
       type: GET_CART,
       payload: res.data.items,
     });
-    
   } catch (err) {
     // Loop through errors and notify user.
     const errors = err.response.data.errors;
@@ -26,11 +22,10 @@ export const getCart =() => async(dispatch)=>{
       errors.forEach((error) => toast.error(error.msg));
     }
   }
-
 };
 
-  // Increase item quantity
-export const addToCart = (id,quantity) => async (dispatch) => {
+// Increase item quantity
+export const addToCart = (id, quantity) => async (dispatch) => {
   // Request headers.
   const config = {
     headers: {
@@ -38,18 +33,16 @@ export const addToCart = (id,quantity) => async (dispatch) => {
     },
   };
 
-    const body = JSON.stringify({
+  const body = JSON.stringify({
     id,
-    quantity
-    })
+    quantity,
+  });
 
-    console.log("ID",id,quantity)
+  console.log('ID', id, quantity);
   try {
-      
     // Send request to API endpoints.
-    const res = await axios.post(`/${API}/orders/items`,body,config);
-    toast.success("Items added to cart 👍🏽")
-
+    await axios.post(`/${API}/orders/items`, body, config);
+    toast.success('Items added to cart 👍🏽');
   } catch (err) {
     // Loop through errors and notify user.
     const errors = err.response.data.errors;
@@ -57,10 +50,9 @@ export const addToCart = (id,quantity) => async (dispatch) => {
       errors.forEach((error) => toast.error(error.msg));
     }
   }
-
 };
 
-export const submitOrder = (orderInfo) => async (dispatch)=>{
+export const submitOrder = (orderInfo) => async (dispatch) => {
   // Request headers.
   const config = {
     headers: {
@@ -68,13 +60,11 @@ export const submitOrder = (orderInfo) => async (dispatch)=>{
     },
   };
 
-  const body = JSON.stringify(orderInfo)
+  const body = JSON.stringify(orderInfo);
 
   try {
-      
     // Send request to API endpoints.
-    const res = await axios.post(`/${API}/orders/`,body,config);
-
+    await axios.post(`/${API}/orders/`, body, config);
   } catch (err) {
     // Loop through errors and notify user.
     const errors = err.response.data.errors;
@@ -82,5 +72,22 @@ export const submitOrder = (orderInfo) => async (dispatch)=>{
       errors.forEach((error) => toast.error(error.msg));
     }
   }
+};
 
-}
+export const emptyCart = () => async (dispatch) => {
+  if (window.confirm('Are you sure? This CANNOT be undone!')) {
+    try {
+      // Send request to API endpoints.
+      const res = await axios.delete(`/${API}/orders`);
+      if (res.data.msg === 'Cart emptied!') {
+        dispatch({ type: EMPTY_CART });
+      }
+    } catch (err) {
+      // Loop through errors and notify user.
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach((error) => toast.error(error.msg));
+      }
+    }
+  }
+};

@@ -13,6 +13,8 @@ const Dashboard = ({
 }) => {
   useEffect(() => {
     getUnfinishedOrders();
+
+    // eslint-disable-next-line
   }, []);
 
   return (

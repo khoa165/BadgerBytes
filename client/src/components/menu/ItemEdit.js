@@ -20,6 +20,8 @@ const ItemEdit = ({ history, item: { currentEdited }, editItem }) => {
     if (!currentEdited) {
       history.push('/menu');
     }
+
+    // eslint-disable-next-line
   }, []);
 
   const INITIAL_DATA = {

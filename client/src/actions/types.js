@@ -24,5 +24,4 @@ export const UPDATE_ITEM_AVAILABILITY = 'UPDATE_ITEM_AVAILABILITY';
 // Cart
 export const GET_CART = 'GET_CART';
 export const ADD_CART = 'ADD_CART';
-// Order
-
+export const EMPTY_CART = 'EMPTY_CART';
