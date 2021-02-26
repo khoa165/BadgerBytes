@@ -30,6 +30,7 @@ const Menu = ({
           <Button color='danger' onClick={() => history.push('/items/new')}>
             Add new Item
           </Button>
+          
         </div>
       ) : (
         <h1 className='text-danger mb-5'>Welcome {user && user.name},</h1>
@@ -51,6 +52,7 @@ const mapStateToProps = (state) => ({
 
 const mapFunctionsToProps = {
   getMenuItems,
+
 };
 
 export default connect(mapStateToProps, mapFunctionsToProps)(withRouter(Menu));

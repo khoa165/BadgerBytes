@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { setEditedItem } from '../../actions/item';
+import { addToCart } from '../../actions/cart';
 import {
   Card,
   CardImg,
@@ -13,16 +14,20 @@ import {
   Button,
 } from 'reactstrap';
 
-const Item = ({ auth: { user }, item, history, setEditedItem }) => {
+const Item = ({ auth: { user }, item, history, setEditedItem, addToCart}) => {
   const [num, setNum] = useState(1);
   // Destructure
   const {
+    _id,
     item_name,
     item_cost,
     picture_link,
     item_description,
     item_category,
   } = item;
+
+
+
   return (
     <Card className='item-card'>
       <CardImg top width='100%' src={picture_link} alt={item_name} />
@@ -48,7 +53,10 @@ const Item = ({ auth: { user }, item, history, setEditedItem }) => {
         <CardText>Description: {item_description}</CardText>
         <div className='button-group'>
           <QuantityButton num={num} setNum={setNum} />
-          <Button color='danger'>Add to cart</Button>
+          {console.log("ID")}
+          {console.log(item)}
+
+          <Button color='danger' onClick={()=> addToCart(_id,num)}>Add to cart</Button>
         </div>
       </CardBody>
     </Card>
@@ -88,6 +96,7 @@ const mapStateToProps = (state) => ({
 
 const mapFunctionsToProps = {
   setEditedItem,
+  addToCart,
 };
 
 export default connect(mapStateToProps, mapFunctionsToProps)(withRouter(Item));

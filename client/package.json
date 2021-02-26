@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
+    "jspdf-autotable": "^3.5.14",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
