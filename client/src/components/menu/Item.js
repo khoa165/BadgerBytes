@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { setEditedItem, updateAvailability } from '../../actions/item';
+import { addToCart } from '../../actions/cart';
 import {
   Card,
   CardImg,
@@ -15,7 +16,7 @@ import {
   Label,
 } from 'reactstrap';
 
-const Item = ({ user, item, history, setEditedItem, updateAvailability }) => {
+const Item = ({ user, item, history, setEditedItem, updateAvailability, addToCart }) => {
   const [num, setNum] = useState(1);
   // Destructure
   const {
@@ -62,6 +63,8 @@ const Item = ({ user, item, history, setEditedItem, updateAvailability }) => {
           {item_category}
         </CardSubtitle>
         <CardText>Description: {item_description}</CardText>
+
+
         {user && user.admin ? (
           <div>
             <Label className='m-0' for={_id}>
@@ -83,7 +86,7 @@ const Item = ({ user, item, history, setEditedItem, updateAvailability }) => {
         ) : (
           <div className='button-group'>
             <QuantityButton num={num} setNum={setNum} />
-            <Button color='danger'>Add to cart</Button>
+            <Button color='danger' onClick={()=> addToCart(_id,num)}>Add to cart</Button>
           </div>
         )}
       </CardBody>
@@ -116,6 +119,7 @@ const QuantityButton = ({ num, setNum }) => {
 Item.propTypes = {
   setEditedItem: PropTypes.func.isRequired,
   updateAvailability: PropTypes.func.isRequired,
+  addToCart: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({});
@@ -123,6 +127,7 @@ const mapStateToProps = (state) => ({});
 const mapFunctionsToProps = {
   setEditedItem,
   updateAvailability,
+  addToCart,
 };
 
 export default connect(mapStateToProps, mapFunctionsToProps)(withRouter(Item));

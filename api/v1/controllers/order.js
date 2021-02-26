@@ -31,6 +31,7 @@ module.exports = {
         cart = new Order({ items: [], total: item.item_cost * quantity });
         cart.user = req.user.id;
         cart.items.push({ id, quantity });
+        
         await cart.save();
       } else {
         const existedItem = await Order.findOne({
@@ -52,6 +53,7 @@ module.exports = {
           console.log('push');
           cart.items.push({ id, quantity });
           cart.total += item.item_cost * quantity;
+
           await cart.save();
         }
       }
@@ -75,7 +77,7 @@ module.exports = {
     }
 
     // Destructuring data from request body.
-    const { pickup_time, car_description, notes } = req.body;
+    const { pickup_time, car_description, notes, payment } = req.body;
 
     try {
       const cart = await Order.findOne({

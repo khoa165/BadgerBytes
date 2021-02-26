@@ -41,6 +41,10 @@ router.post(
       .withMessage('Please enter a number of minutes until pickup'),
     check('car_description').optional(),
     check('notes').optional(),
+    check('payment')
+      .notEmpty()
+      .isIn(['paypal', 'applepay'])
+      .withMessage('Payment must be either Paypal or Apple Pay'),
   ],
   orderController.submit
 );
