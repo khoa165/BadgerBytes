@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import { getMenuItems } from '../../actions/item';
-import { addToCart } from '../../actions/cart';
 import Items from './Items';
 import { Button } from 'reactstrap';
 import { withRouter } from 'react-router-dom';

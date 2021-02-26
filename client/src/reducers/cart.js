@@ -1,5 +1,5 @@
-import { GET_CART } from '../actions/types';
-import {ADD_CART} from '../actions/types';
+import { GET_CART,ADD_CART} from '../actions/types';
+
 
 const initialState = {
   cart: [],

@@ -18,7 +18,7 @@ const Item = ({ auth: { user }, item, history, setEditedItem, addToCart}) => {
   const [num, setNum] = useState(1);
   // Destructure
   const {
-    item_id,
+    _id,
     item_name,
     item_cost,
     picture_link,
@@ -53,7 +53,10 @@ const Item = ({ auth: { user }, item, history, setEditedItem, addToCart}) => {
         <CardText>Description: {item_description}</CardText>
         <div className='button-group'>
           <QuantityButton num={num} setNum={setNum} />
-          <Button color='danger' onClick={()=> addToCart(history,item_id,item_name,item_cost,num)}>Add to cart</Button>
+          {console.log("ID")}
+          {console.log(item)}
+
+          <Button color='danger' onClick={()=> addToCart(_id,num)}>Add to cart</Button>
         </div>
       </CardBody>
     </Card>
