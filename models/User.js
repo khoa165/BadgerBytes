@@ -22,6 +22,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  payment: {
+    type: String,
+  },
   admin: {
     type: Boolean,
     default: false,

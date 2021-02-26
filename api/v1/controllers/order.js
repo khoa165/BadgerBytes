@@ -31,7 +31,7 @@ module.exports = {
         cart = new Order({ items: [], total: item.item_cost * quantity });
         cart.user = req.user.id;
         cart.items.push({ id, quantity });
-        
+
         await cart.save();
       } else {
         const existedItem = await Order.findOne({
@@ -95,6 +95,16 @@ module.exports = {
       }
       if (car_description) cart.car_description = car_description;
       if (notes) cart.notes = notes;
+
+      const user = await User.findById(req.user.id);
+
+      if (payment === 'paypal') {
+        user.payment = 'PayPal';
+      } else {
+        user.payment = 'Apple Pay';
+      }
+
+      await user.save();
 
       await cart.save();
       return res.status(200).json({ cart });
