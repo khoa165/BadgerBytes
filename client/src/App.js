@@ -11,9 +11,9 @@ import setAuthToken from './utils/setAuthToken';
 
 // Custom components.
 // Routing components.
-import Routes from './Components/routing/Routes';
+import Routes from './components/routing/Routes';
 // Page components.
-import Landing from './Components/pages/Landing';
+import Landing from './components/pages/Landing';
 
 // Stylesheet.
 import './styles/App.scss';
