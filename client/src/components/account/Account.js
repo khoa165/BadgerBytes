@@ -27,6 +27,7 @@ const Account = ({ auth: { loading, user }, updateUser }) => {
     oldPassword: '',
     newPassword: '',
     confirmedNewPassword: '',
+    payment: '',
   });
 
   useEffect(() => {
@@ -44,6 +45,7 @@ const Account = ({ auth: { loading, user }, updateUser }) => {
     oldPassword,
     newPassword,
     confirmedNewPassword,
+    payment,
   } = data;
 
   const [inEdit, setInEdit] = useState(false);
@@ -69,6 +71,10 @@ const Account = ({ auth: { loading, user }, updateUser }) => {
         address,
         email,
       };
+
+      if (payment === 'PayPal' || payment === 'Apple Pay') {
+        userObj.payment = payment;
+      }
       if (oldPassword) userObj.oldPassword = oldPassword;
       if (newPassword) userObj.newPassword = newPassword;
       if (confirmedNewPassword)
@@ -106,6 +112,16 @@ const Account = ({ auth: { loading, user }, updateUser }) => {
               </FormGroup>
               <FormGroup>
                 <Input
+                  type='email'
+                  name='email'
+                  value={email}
+                  placeholder='Please enter a valid email'
+                  onChange={onChange}
+                  required
+                />
+              </FormGroup>
+              <FormGroup>
+                <Input
                   type='text'
                   name='phone'
                   value={phone}
@@ -126,13 +142,15 @@ const Account = ({ auth: { loading, user }, updateUser }) => {
               </FormGroup>
               <FormGroup>
                 <Input
-                  type='email'
-                  name='email'
-                  value={email}
-                  placeholder='Please enter a valid email'
+                  type='select'
+                  name='payment'
+                  defaultValue={payment}
                   onChange={onChange}
-                  required
-                />
+                >
+                  <option value={'Select'}>Select payment method</option>
+                  <option value={'PayPal'}>PayPal</option>
+                  <option value={'Apple Pay'}>Apple Pay</option>
+                </Input>
               </FormGroup>
               <FormGroup>
                 <Input
@@ -205,6 +223,10 @@ const Account = ({ auth: { loading, user }, updateUser }) => {
                   <span>{user.address}</span>
                 </CardText>
               )}
+              <CardText>
+                <span>Payment</span>
+                <span>{user.payment ? user.payment : 'N/A'}</span>
+              </CardText>
               <Button color='info' onClick={() => setInEdit(true)}>
                 Update account
               </Button>

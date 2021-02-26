@@ -110,6 +110,7 @@ module.exports = {
       oldPassword,
       newPassword,
       confirmedNewPassword,
+      payment,
     } = req.body;
 
     try {
@@ -167,6 +168,9 @@ module.exports = {
       user.email = email;
       user.phone = phone;
       user.address = address;
+
+      if (payment) user.payment = payment;
+
       await user.save();
 
       delete user._doc.password;

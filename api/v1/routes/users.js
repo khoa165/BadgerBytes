@@ -53,6 +53,10 @@ router.put(
       .withMessage('Password must contain a number!'),
     check('confirmedNewPassword').optional().notEmpty(),
     check('staffKey').optional().notEmpty(),
+    check('payment')
+      .optional()
+      .isIn(['PayPal', 'Apple Pay'])
+      .withMessage('Payment must be either PayPal or Apple Pay'),
   ],
   userController.update
 );
