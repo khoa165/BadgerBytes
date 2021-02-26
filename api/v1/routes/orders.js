@@ -39,6 +39,8 @@ router.post(
       .optional()
       .isNumeric()
       .withMessage('Please enter a number of minutes until pickup'),
+    check('car_description').optional(),
+    check('notes').optional(),
   ],
   orderController.submit
 );

@@ -138,7 +138,7 @@ module.exports = {
       order.completed = completed;
 
       await order.save();
-      return res.status(200).json({ msg: 'Order updated!' });
+      return res.status(200).json({ order });
     } catch (err) {
       console.error(err.message);
       return res.status(500).json({
@@ -169,7 +169,17 @@ module.exports = {
       const orders = await Order.find({
         paid: true,
         completed: false,
-      }).sort({ priority: -1, ordered_at: 1 });
+      })
+
+        .populate({
+          path: 'items.id',
+          select: 'item_name item_cost picture link',
+        })
+        .populate({
+          path: 'user',
+          select: 'name email phone',
+        })
+        .sort({ priority: -1, ordered_at: 1 });
 
       return res.status(200).json(orders);
     } catch (err) {

@@ -11,6 +11,7 @@ export const LOGOUT = 'LOGOUT';
 
 // Orders.
 export const GET_UNFINISHED_ORDERS = 'GET_UNFINISHED_ORDERS';
+export const UPDATE_STATUS_PRIOR = 'UPDATE_STATUS_PRIOR';
 
 // Items.
 export const GET_MENU_ITEMS = 'GET_MENU_ITEMS';
