@@ -46,14 +46,7 @@ export const loadUser = () => async (dispatch) => {
 };
 
 // Register user.
-export const register = ({
-  name,
-  phone,
-  address,
-  email,
-  password,
-  confirmedPassword,
-}) => async (dispatch) => {
+export const register = (userObj) => async (dispatch) => {
   // Request headers.
   const config = {
     headers: {
@@ -62,14 +55,7 @@ export const register = ({
   };
 
   // User data.
-  const body = JSON.stringify({
-    name,
-    phone,
-    address,
-    email,
-    password,
-    confirmedPassword,
-  });
+  const body = JSON.stringify(userObj);
 
   try {
     // Send request to API endpoint.

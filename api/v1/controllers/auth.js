@@ -4,9 +4,6 @@ const { validationResult } = require('express-validator');
 // Authentication.
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-
-const path = require('path');
 
 // Private data configurations.
 const dotenv = require('dotenv');

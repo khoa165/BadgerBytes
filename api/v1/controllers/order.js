@@ -31,7 +31,7 @@ module.exports = {
         cart = new Order({ items: [], total: item.item_cost * quantity });
         cart.user = req.user.id;
         cart.items.push({ id, quantity });
-        
+
         await cart.save();
       } else {
         const existedItem = await Order.findOne({
@@ -95,6 +95,16 @@ module.exports = {
       }
       if (car_description) cart.car_description = car_description;
       if (notes) cart.notes = notes;
+
+      const user = await User.findById(req.user.id);
+
+      if (payment === 'paypal') {
+        user.payment = 'PayPal';
+      } else {
+        user.payment = 'Apple Pay';
+      }
+
+      await user.save();
 
       await cart.save();
       return res.status(200).json({ cart });
@@ -225,6 +235,36 @@ module.exports = {
         });
         return res.status(200).json({ items });
       }
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({
+        errors: [
+          { msg: 'Unexpected server error happened. Please try again later!' },
+        ],
+      });
+    }
+  },
+
+  emptyCart: async (req, res, _next) => {
+    // Check for errors.
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      let cart = await Order.findOne({
+        user: req.user.id,
+        paid: false,
+        completed: false,
+      });
+
+      if (cart) {
+        cart.items = [];
+        await cart.save();
+      }
+
+      return res.status(200).json({ msg: 'Cart emptied!' });
     } catch (err) {
       console.error(err.message);
       return res.status(500).json({

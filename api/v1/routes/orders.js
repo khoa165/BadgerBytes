@@ -79,4 +79,9 @@ router.get('/', auth, orderController.getUnfinishedOrders);
 // @access    Private
 router.get('/me', auth, orderController.getCart);
 
+// @route     GET /orders/me
+// @desc
+// @access    Private
+router.delete('/', auth, orderController.emptyCart);
+
 module.exports = router;

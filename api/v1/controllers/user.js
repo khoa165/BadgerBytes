@@ -28,6 +28,7 @@ module.exports = {
       address,
       password,
       confirmedPassword,
+      staffKey,
     } = req.body;
 
     try {
@@ -56,6 +57,11 @@ module.exports = {
         phone,
         address,
       });
+
+      // Check if valid staff key.
+      if (staffKey === process.env.STAFF_KEY) {
+        user.staff = true;
+      }
 
       // Encrypt password.
       const salt = await bcrypt.genSalt(15);
@@ -104,6 +110,7 @@ module.exports = {
       oldPassword,
       newPassword,
       confirmedNewPassword,
+      payment,
     } = req.body;
 
     try {
@@ -161,6 +168,9 @@ module.exports = {
       user.email = email;
       user.phone = phone;
       user.address = address;
+
+      if (payment) user.payment = payment;
+
       await user.save();
 
       delete user._doc.password;

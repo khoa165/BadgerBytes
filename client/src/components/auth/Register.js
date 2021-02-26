@@ -17,12 +17,15 @@ const Register = ({ register, isAuthenticated }) => {
     password: '',
     confirmedPassword: '',
   });
+  const [staffKey, setStaffKey] = useState('');
 
   // Destructuring.
   const { name, phone, address, email, password, confirmedPassword } = user;
 
   // Event listener for change in input fields.
   const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+
+  const onChangeKey = (e) => setStaffKey(e.target.value);
 
   // Event listener for form submission.
   const onSubmit = (e) => {
@@ -34,7 +37,18 @@ const Register = ({ register, isAuthenticated }) => {
     } else if (password !== confirmedPassword) {
       toast.error('Passwords do not match!');
     } else {
-      register({ name, phone, address, email, password, confirmedPassword });
+      const userObj = {
+        name,
+        phone,
+        address,
+        email,
+        password,
+        confirmedPassword,
+      };
+      if (staffKey && staffKey.length > 0) {
+        userObj.staffKey = staffKey;
+      }
+      register(userObj);
     }
   };
 
@@ -90,6 +104,7 @@ const Register = ({ register, isAuthenticated }) => {
                 value={email}
                 placeholder='Please enter a valid email'
                 onChange={onChange}
+                autoComplete='new-password'
                 required
               />
             </FormGroup>
@@ -100,6 +115,7 @@ const Register = ({ register, isAuthenticated }) => {
                 value={password}
                 placeholder='Please enter a secure password'
                 onChange={onChange}
+                autoComplete='new-password'
                 required
               />
             </FormGroup>
@@ -110,6 +126,16 @@ const Register = ({ register, isAuthenticated }) => {
                 value={confirmedPassword}
                 placeholder='Please confirm your password'
                 onChange={onChange}
+                required
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                type='text'
+                name='staffKey'
+                value={staffKey}
+                placeholder='If you are staff, enter staff key'
+                onChange={onChangeKey}
                 required
               />
             </FormGroup>
