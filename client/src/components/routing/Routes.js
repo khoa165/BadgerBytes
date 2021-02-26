@@ -22,6 +22,9 @@ import Dashboard from '../dashboard/Dashboard';
 // Cart component
 import Cart from '../cart/Cart'
 
+//Payment component
+import Payment from '../payment/Payment'
+
 // Library component.
 import { Container } from 'reactstrap';
 
@@ -39,6 +42,7 @@ const Routes = () => {
           <PrivateRoute exact path='/items/:item_id' component={ItemEdit} />
           <PrivateRoute exact path='/dashboard' component={Dashboard} />
           <PrivateRoute exact path='/cart' component={Cart} />
+          <PrivateRoute exact path='/payment' component={Payment} />
           <Route component={NotFound} />
         </Switch>
       </Container>
