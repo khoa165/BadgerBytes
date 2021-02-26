@@ -21,6 +21,7 @@ const OrderSchema = new mongoose.Schema({
 
   ordered_at: {
     type: Date,
+    default: Date.now,
   },
   pickup_time: {
     type: Number,

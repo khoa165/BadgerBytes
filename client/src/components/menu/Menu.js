@@ -20,7 +20,7 @@ const Menu = ({
     // eslint-disable-next-line
   }, []);
 
-  return loading && menuItems === null ? (
+  return loading || menuItems === null || user === null ? (
     <Spinner />
   ) : (
     <div id='menu'>
@@ -35,7 +35,7 @@ const Menu = ({
       ) : (
         <h1 className='text-danger mb-5'>Welcome {user && user.name},</h1>
       )}
-      <Items items={menuItems} />
+      <Items items={menuItems} user={user} />
     </div>
   );
 };

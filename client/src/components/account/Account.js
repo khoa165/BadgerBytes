@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Form, FormGroup, Input } from 'reactstrap';
+import { Row, Col, Form, FormGroup, Input } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Spinner from '../layout/Spinner';
 import { toast } from 'react-toastify';
 import { updateUser } from '../../actions/auth';
 
-const Account = ({ auth: { loading, user } }) => {
+const Account = ({ auth: { loading, user }, updateUser }) => {
   // Set user data.
   const [data, setData] = useState({
     name: '',
@@ -19,7 +19,9 @@ const Account = ({ auth: { loading, user } }) => {
   });
 
   useEffect(() => {
-    setData(user);
+    if (!loading && user) {
+      setData(user);
+    }
   }, [loading, user]);
 
   // Destructuring.
@@ -37,22 +39,28 @@ const Account = ({ auth: { loading, user } }) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (newPassword.length < 6 || !/\d/.test(newPassword)) {
+    if (newPassword && (newPassword.length < 6 || !/\d/.test(newPassword))) {
       toast.error(
         'Password must be at least 6 characters and contain at least a number!'
       );
-    } else if (newPassword !== confirmedNewPassword) {
+    } else if (
+      newPassword &&
+      confirmedNewPassword &&
+      newPassword !== confirmedNewPassword
+    ) {
       toast.error('Passwords do not match!');
     } else {
-      updateUser({
+      const userObj = {
         name,
         phone,
         address,
         email,
-        oldPassword,
-        newPassword,
-        confirmedNewPassword,
-      });
+      };
+      if (oldPassword) userObj.oldPassword = oldPassword;
+      if (newPassword) userObj.newPassword = newPassword;
+      if (confirmedNewPassword)
+        userObj.confirmedNewPassword = confirmedNewPassword;
+      updateUser(userObj);
     }
   };
 
@@ -63,91 +71,97 @@ const Account = ({ auth: { loading, user } }) => {
     <Spinner />
   ) : (
     <div>
-      <h1>Hello world</h1>
-      <Form onSubmit={onSubmit} className='authenticate-form'>
-        <h3 className='text-center text-info mb-4'>Account Update</h3>
-        <FormGroup>
-          <Input
-            type='text'
-            name='name'
-            value={name}
-            placeholder='Please enter your name'
-            onChange={onChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            type='text'
-            name='phone'
-            value={phone}
-            placeholder='Please enter your phone number'
-            onChange={onChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            type='text'
-            name='address'
-            value={address}
-            placeholder='Please enter your address'
-            onChange={onChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            type='email'
-            name='email'
-            value={email}
-            placeholder='Please enter a valid email'
-            onChange={onChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            type='password'
-            name='oldPassword'
-            value={oldPassword}
-            placeholder='Please enter your existing password'
-            onChange={onChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            type='password'
-            name='newPassword'
-            value={newPassword}
-            placeholder='Please enter a new password'
-            onChange={onChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            type='password'
-            name='confirmedNewPassword'
-            value={confirmedNewPassword}
-            placeholder='Please confirm your new password'
-            onChange={onChange}
-            required
-          />
-        </FormGroup>
-        <Input
-          type='submit'
-          value='Update'
-          className='btn-outline-info btn-block submitFormButton'
-        />
-      </Form>
+      <Row>
+        <Col
+          xs={{ size: 8, offset: 2 }}
+          md={{ size: 6, offset: 3 }}
+          lg={{ size: 4, offset: 4 }}
+        >
+          <h1>Hello world</h1>
+          <Form onSubmit={onSubmit} className='authenticate-form'>
+            <h3 className='text-center text-info mb-4'>Account Update</h3>
+            <FormGroup>
+              <Input
+                type='text'
+                name='name'
+                value={name}
+                placeholder='Please enter your name'
+                onChange={onChange}
+                required
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                type='text'
+                name='phone'
+                value={phone}
+                placeholder='Please enter your phone number'
+                onChange={onChange}
+                required
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                type='text'
+                name='address'
+                value={address}
+                placeholder='Please enter your address'
+                onChange={onChange}
+                required
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                type='email'
+                name='email'
+                value={email}
+                placeholder='Please enter a valid email'
+                onChange={onChange}
+                required
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                type='password'
+                name='oldPassword'
+                value={oldPassword}
+                placeholder='Please enter your existing password'
+                onChange={onChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                type='password'
+                name='newPassword'
+                value={newPassword}
+                placeholder='Please enter a new password'
+                onChange={onChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                type='password'
+                name='confirmedNewPassword'
+                value={confirmedNewPassword}
+                placeholder='Please confirm your new password'
+                onChange={onChange}
+              />
+            </FormGroup>
+            <Input
+              type='submit'
+              value='Update'
+              className='btn-outline-info btn-block submitFormButton'
+            />
+          </Form>
+        </Col>
+      </Row>
     </div>
   );
 };
 
 Account.propTypes = {
   auth: PropTypes.object.isRequired,
+  updateUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

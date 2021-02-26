@@ -163,6 +163,8 @@ module.exports = {
       user.address = address;
       await user.save();
 
+      delete user._doc.password;
+
       return res.status(200).json({ user });
     } catch (err) {
       console.error(err.message);

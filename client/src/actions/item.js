@@ -5,6 +5,7 @@ import {
   CLEAR_EDITED_ITEM,
   ADD_ITEM,
   UPDATE_ITEM,
+  UPDATE_ITEM_AVAILABILITY,
 } from './types';
 import { toast } from 'react-toastify';
 
@@ -31,8 +32,6 @@ export const getMenuItems = () => async (dispatch) => {
 
 export const setEditedItem = (history, item) => async (dispatch) => {
   try {
-    console.log('in set edited item');
-    console.log(item);
     // Call reducer to set current item for edited.
     dispatch({
       type: SET_EDITED_ITEM,
@@ -86,6 +85,35 @@ export const editItem = (history, item, edit) => async (dispatch) => {
     dispatch(clearEditedItem());
     history.push(`/menu`);
     toast.success(edit ? 'Item updated successfully!' : 'New item added!');
+  } catch (err) {
+    // Loop through errors and notify user.
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => toast.error(error.msg));
+    }
+  }
+};
+
+export const updateAvailability = (id, item_availability) => async (
+  dispatch
+) => {
+  try {
+    // Request headers.
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const data = JSON.stringify({ item_availability });
+
+    // Send request to API endpoints.
+    const res = await axios.put(`/${API}/items/${id}`, data, config);
+
+    dispatch({
+      type: UPDATE_ITEM_AVAILABILITY,
+      payload: res.data,
+    });
   } catch (err) {
     // Loop through errors and notify user.
     const errors = err.response.data.errors;

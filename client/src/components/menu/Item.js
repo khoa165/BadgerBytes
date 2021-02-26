@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { setEditedItem } from '../../actions/item';
+import { setEditedItem, updateAvailability } from '../../actions/item';
 import { addToCart } from '../../actions/cart';
 import {
   Card,
@@ -12,9 +12,11 @@ import {
   CardTitle,
   CardSubtitle,
   Button,
+  CustomInput,
+  Label,
 } from 'reactstrap';
 
-const Item = ({ auth: { user }, item, history, setEditedItem, addToCart}) => {
+const Item = ({ user, item, history, setEditedItem, updateAvailability, addToCart }) => {
   const [num, setNum] = useState(1);
   // Destructure
   const {
@@ -26,13 +28,23 @@ const Item = ({ auth: { user }, item, history, setEditedItem, addToCart}) => {
     item_category,
   } = item;
 
+  const [available, setAvailable] = useState(
+    item && item.item_availability && item.item_availability === 'In Stock!'
+      ? true
+      : false
+  );
 
+  const toggle = () => {
+    const avai = !available ? 'In Stock!' : 'Out of Stock';
+    updateAvailability(_id, avai);
+    setAvailable(!available);
+  };
 
   return (
     <Card className='item-card'>
       <CardImg top width='100%' src={picture_link} alt={item_name} />
       <CardBody>
-        {user && user.admin ? (
+        {user && user && user.admin ? (
           <div className='food-item-title'>
             <CardTitle tag='h5'>
               {item_name} (${item_cost * num})
@@ -51,13 +63,32 @@ const Item = ({ auth: { user }, item, history, setEditedItem, addToCart}) => {
           {item_category}
         </CardSubtitle>
         <CardText>Description: {item_description}</CardText>
-        <div className='button-group'>
-          <QuantityButton num={num} setNum={setNum} />
-          {console.log("ID")}
-          {console.log(item)}
 
-          <Button color='danger' onClick={()=> addToCart(_id,num)}>Add to cart</Button>
-        </div>
+
+        {user && user.admin ? (
+          <div>
+            <Label className='m-0' for={_id}>
+              Item available: {available ? 'yes' : 'no'}
+            </Label>
+            <CustomInput
+              id={_id}
+              type='switch'
+              name='available'
+              label={
+                available
+                  ? 'Turn off to indicate item out of stock!'
+                  : 'Turn on to indicate item available'
+              }
+              onChange={toggle}
+              checked={available}
+            />
+          </div>
+        ) : (
+          <div className='button-group'>
+            <QuantityButton num={num} setNum={setNum} />
+            <Button color='danger' onClick={()=> addToCart(_id,num)}>Add to cart</Button>
+          </div>
+        )}
       </CardBody>
     </Card>
   );
@@ -86,16 +117,16 @@ const QuantityButton = ({ num, setNum }) => {
 };
 
 Item.propTypes = {
-  auth: PropTypes.object.isRequired,
   setEditedItem: PropTypes.func.isRequired,
+  updateAvailability: PropTypes.func.isRequired,
+  addToCart: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
+const mapStateToProps = (state) => ({});
 
 const mapFunctionsToProps = {
   setEditedItem,
+  updateAvailability,
   addToCart,
 };
 

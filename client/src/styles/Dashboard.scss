@@ -1,0 +1,56 @@
+#dashboard {
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+
+    .badges {
+      max-width: 350px;
+      text-align: right;
+      flex: 1;
+    }
+
+    .badge {
+      margin-left: 5px;
+      padding: 10px;
+    }
+
+    .inline-button {
+      width: 100px;
+    }
+
+    .fas.fa-edit {
+      font-size: 20px;
+      margin-right: 3px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    span {
+      font-size: 16px;
+    }
+  }
+
+  .text-bold {
+    font-weight: bold;
+  }
+
+  .order-items {
+    margin: 10px 0;
+  }
+
+  .order-total,
+  .order-item {
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  hr {
+    margin: 5px;
+  }
+}

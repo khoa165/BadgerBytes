@@ -27,7 +27,7 @@ router.post(
   orderController.addItem
 );
 
-// @route     POST /order
+// @route     POST /ordera
 // @desc      Submit order
 // @access    Public
 router.post(
@@ -43,10 +43,8 @@ router.post(
     check('notes').optional(),
     check('payment')
       .notEmpty()
-      .isIn(['paypal','applepay'])
-      .withMessage(
-          'Payment must be either Paypal, Stripe, or Apple Pay'),
-  
+      .isIn(['paypal', 'applepay'])
+      .withMessage('Payment must be either Paypal or Apple Pay'),
   ],
   orderController.submit
 );
