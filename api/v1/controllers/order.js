@@ -261,6 +261,7 @@ module.exports = {
 
       if (cart) {
         cart.items = [];
+        cart.total = 0;
         await cart.save();
       }
 
