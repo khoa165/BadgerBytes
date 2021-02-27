@@ -136,7 +136,6 @@ const Register = ({ register, isAuthenticated }) => {
                 value={staffKey}
                 placeholder='If you are staff, enter staff key'
                 onChange={onChangeKey}
-                required
               />
             </FormGroup>
             <Input
