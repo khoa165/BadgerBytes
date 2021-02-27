@@ -52,10 +52,10 @@ const Cart = ({ getCart, emptyCart, auth: { user }, cart }) => {
       <Container className='border border-2 shadow pb-4'>
         <Row>
           <Col>
-            <h2 class='text-danger text-uppercase text-center mt-2 '>
+            <h2 className='text-danger text-uppercase text-center mt-2 '>
               My Cart
             </h2>
-            <h4 class='text-info text-center mt-2 '>
+            <h4 className='text-info text-center mt-2 '>
               {cart &&
                 cart.length === 0 &&
                 'No items in cart. Return to menu to add items!'}
@@ -78,7 +78,7 @@ const Cart = ({ getCart, emptyCart, auth: { user }, cart }) => {
           <CartItem key={eachItem} item={eachItem}></CartItem>
         ))}
         <Row className='justify-content-center'>
-          <h3 class='mx-2 mt-4'>Total: ${getTotal()}</h3>
+          <h3 className='mx-2 mt-4'>Total: ${getTotal()}</h3>
         </Row>
       </Container>
       {cart && cart.length > 0 && (

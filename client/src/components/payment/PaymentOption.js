@@ -56,7 +56,7 @@ const submitPayment = () =>{
     //Print confirmation and receipt 
     if(isPaid){
         return(
-            <Container><Row className="mt-4 justify-content-center"><h2 class="text-success">Your order is confirmed!</h2></Row>
+            <Container><Row className="mt-4 justify-content-center"><h2 className="text-success">Your order is confirmed!</h2></Row>
             <Row className="mt-2 justify-content-center"><Button onClick={()=>generateUserReceipt(user,cart,paymentInfo,paymentMode)}>Print Receipt</Button>
             <Button className="ml-2 " color="warning" onClick={()=>{history.push("/menu")}}>Back to Menu</Button></Row>
             </Container>
@@ -66,8 +66,8 @@ const submitPayment = () =>{
         return(
 <Container className="mt-4">
             <Row className="justify-content-center"><h2>Payment</h2></Row>
-            <Row className="justify-content-center"><button type="button" class="btn w-25" onClick={()=>setIsChosen("paypal")}><img src={PaypalIcon} class="w-100" alt="Paypal Icon"></img></button>
-            <button type="button" class="btn w-25" onClick={()=>setIsChosen("applepay")}><img src={AppleIcon} class="w-100" alt="ApplePay Icon"></img></button></Row>
+            <Row className="justify-content-center"><button type="button" className="btn w-25" onClick={()=>setIsChosen("paypal")}><img src={PaypalIcon} className="w-100" alt="Paypal Icon"></img></button>
+            <button type="button" className="btn w-25" onClick={()=>setIsChosen("applepay")}><img src={AppleIcon} className="w-100" alt="ApplePay Icon"></img></button></Row>
 
             <Row><Col>{chosenPayment()}</Col></Row>
 

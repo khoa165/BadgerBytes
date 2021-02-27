@@ -49,7 +49,7 @@ export const Payment = ({history,
       
             <Container className="border border-2 shadow pb-4">
                 <Row>
-                    <Col><h2 class="text-center mt-2 ">Your Cart</h2></Col>
+                    <Col><h2 className="text-center mt-2 ">Your Cart</h2></Col>
                 </Row>
                 <Row className="text-center mt-4 justify-content-center">
 
@@ -63,7 +63,7 @@ export const Payment = ({history,
                         <CartItem key={eachItem} item={eachItem}></CartItem>
                     ))}
                 <Row className="justify-content-center ">
-                    <h3 class="mx-2">Total: ${getTotal()}</h3>
+                    <h3 className="mx-2">Total: ${getTotal()}</h3>
                 </Row>
                 <Row className="mt-4 ml-4"><Info pickupInfo={location.state.info}/></Row>
                 

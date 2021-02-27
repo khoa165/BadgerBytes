@@ -28,20 +28,6 @@ const OrderForm = ({ history }) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
-  //If time range is less than 0 or more than 360, return false to prevent the action
-  const getTimeRange = () => {
-    if (timeRange - 30 < 30 || timeRange + 30 > 360) {
-      setTimeRange(60);
-      return false;
-    } else return true;
-  };
-
-  useEffect(() => {
-    getTimeRange();
-
-    // eslint-disable-next-line
-  }, [timeRange]);
-
   const onPaymentClick = () => {
     history.push({
       pathname: '/payment',
@@ -52,41 +38,40 @@ const OrderForm = ({ history }) => {
   return (
     <div>
       <Container>
-        <h2 class='text-center'>Order form</h2>
+        <h2 className='text-center'>Order form</h2>
         <Form>
           <FormGroup>
-            <Label>Pickup range</Label>
-            <Row>
-              <div class='mx-3  border border-2 rounded px-2'>
-                <p class=' text-center'>{timeRange} minutes</p>
+            <Label>
+              Select number of minutes until pickup (15-min interval increment
+              from 30 minutes to 6 hours)
+            </Label>
+            <Row className='justify-content-center'>
+              <Button
+                style={{ width: '36px', height: '36px' }}
+                className='mx-2 rounded-circle'
+                color='danger'
+                onClick={() => timeRange >= 45 && setTimeRange(timeRange - 15)}
+              >
+                -
+              </Button>
+              <div
+                style={{ minWidth: '150px' }}
+                className='mx-3 border border-2 rounded px-2'
+              >
+                <p className='m-0 text-center'>
+                  {Math.floor(timeRange / 60) > 0 &&
+                    Math.floor(timeRange / 60) + ' hours '}
+                  {timeRange % 60 > 0 && (timeRange % 60) + ' minutes'}
+                </p>
               </div>
 
               <Button
-                className='rounded'
+                style={{ width: '36px', height: '36px' }}
+                className='mx-2 rounded-circle'
                 color='success'
-                size='sm'
-                onClick={() =>
-                  getTimeRange() === false
-                    ? toast(
-                        'Must be more than 30 minutes and less than 6 hours'
-                      )
-                    : setTimeRange(timeRange + 30)
-                }
+                onClick={() => timeRange <= 345 && setTimeRange(timeRange + 15)}
               >
                 +
-              </Button>
-              <Button
-                className='mx-2 '
-                color='danger'
-                onClick={() =>
-                  getTimeRange() === false
-                    ? toast(
-                        'Must be more than 30 minutes and less than 6 hours'
-                      )
-                    : setTimeRange(timeRange - 30)
-                }
-              >
-                -
               </Button>
             </Row>
           </FormGroup>

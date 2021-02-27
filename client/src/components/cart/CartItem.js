@@ -13,7 +13,7 @@ const CartItem = (item) => {
       </Col>
       <Col xs={2} className=' mx-2 mt-2 '>
         <Row className='justify-content-center'>
-          <p class='mr-2'>{quantity}</p>
+          <p className='mr-2'>{quantity}</p>
         </Row>
       </Col>
       <Col xs={2} className=' mx-2 mt-2 text-center'>
