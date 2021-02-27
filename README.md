@@ -1,7 +1,7 @@
 # Badger Bytes Spike Exercies
 
 Group: Madison Retaurant COVID-19 Information System  
-Team Members: Cecelia Peterson, Harry Le, Matthew McJoynt, Prasoon Sinha, Walt Boettge  
+Team Members: Cecelia Peterson, Harry Le, Matthew McJoynt, Prasoon Sinha, Riza Hassan, Walt Boettge  
 
 ## Project:  
 Website allowing customers to order food for pickup. Customers can select food items to build an order, staff can view and prioritize orders, and administrators can update menu items, among other features.  
