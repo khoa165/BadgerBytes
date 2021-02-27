@@ -19,7 +19,9 @@ const Cart = ({ getCart, emptyCart, auth: { user }, cart }) => {
 
   const getTotal = () => {
     let total = 0;
-    cart.map((eachItem) => (total = total + eachItem.price));
+    cart.map(
+      (eachItem) => (total = total + eachItem.price * eachItem.quantity)
+    );
     return total.toFixed(2);
   };
 

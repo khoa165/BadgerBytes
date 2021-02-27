@@ -22,8 +22,8 @@ const generateOrderReceipt = (order) => {
       i + 1,
       item_name,
       quantity,
-      item_cost.toFixed(2),
-      (quantity * item_cost).toFixed(2),
+      '$' + item_cost.toFixed(2),
+      '$' + (quantity * item_cost).toFixed(2),
     ];
   });
 
@@ -46,7 +46,7 @@ const generateOrderReceipt = (order) => {
     15,
     55
   );
-  doc.text(`Total: $${total}`, 15, 62);
+  doc.text(`Total: $${total.toFixed(2)}`, 15, 62);
 
   doc.autoTable(tableColumn, tableRows, { startY: 70 });
   doc.save(`Order_receipt_#${_id}.pdf`);
